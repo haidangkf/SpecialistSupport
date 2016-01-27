@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="grey_alfa">#55000000</color>
+    <!-- PALETTE TIM 2016 -->
+    <!-- primari -->
+    <color name="primario_1">#004691</color>
+    <color name="primario_2">#EB0028</color>
+    <!-- ausiliari di primo livello -->
+    <color name="ausiliario_a_01">#003264</color>
+    <color name="ausiliario_a_02">#376ea5</color>
+    <color name="ausiliario_a_03">#82b9e6</color>
+    <color name="ausiliario_a_04">#960028</color>
+    <color name="ausiliario_a_05">#c80028</color>
+    <color name="ausiliario_a_06">#ff825a</color>
+    <!-- ausiliari di secondo e terzo livello -->
+    <color name="ausiliario_b_01">#BEB991</color>
+    <color name="ausiliario_b_02">#dcd2cd</color>
+    <color name="ausiliario_b_03">#ebe6e1</color>
+    <color name="ausiliario_b_04">#a59173</color>
+    <color name="ausiliario_b_05">#dcc89b</color>
+    <color name="ausiliario_b_06">#fff0c3</color>
+    <color name="ausiliario_c_01">#008c55</color>
+    <color name="ausiliario_c_02">#82c85a</color>
+    <color name="ausiliario_c_03">#b4d28c</color>
+    <color name="ausiliario_c_04">#dc8200</color>
+    <color name="ausiliario_c_05">#fab932</color>
+    <color name="ausiliario_c_06">#fbd872</color>
+    <color name="ausiliario_c_07">#642d5f</color>
+    <color name="ausiliario_c_08">#6e69a0</color>
+    <color name="ausiliario_c_09">#aaa5c8</color>
+    <color name="ausiliario_c_10">#005a64</color>
+    <color name="ausiliario_c_11">#006e78</color>
+    <color name="ausiliario_c_12">#73a5a5</color>
+
+</resources>

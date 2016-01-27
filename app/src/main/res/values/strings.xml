@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Aiutami</string>
+    <string name="logo">logo_telecom_tim</string>
+    <string name="avatar">avatar</string>
+    <string name="btnUtente">CAMBIA</string>
+    <string name="btnLogin">ENTRA</string>
+    <!-- Shared preference: non utilizzare default, in modo che il processo di login sia indipendente da dati app-->
+    <string name="USERINFO">it.telecomitalia.my.affiancamenti.USERINFO</string>
+    <string name="TELEFONO">it.telecomitalia.my.affiancamenti.TELEFONO</string>
+    <!-- Elementi per maschere di login -->
+    <string name="login_button">Entra</string>
+    <string name="hint_user">matricola</string>
+    <string name="hint_pwd">password</string>
+    <string name="hint_search">Ricerco&#8230;</string>
+    <string name="title_activity_main">MainActivity</string>
+    <!-- Errori in fase di login -->
+    <string name="error1">INSERIRE MATRICOLA E PASSWORD\nDI POSTA ELETTRONICA</string>
+    <string name="error2">NESSUNA CONNESSIONE DI RETE DISPONIBILE</string>
+    <string name="error3">WIFI ATTIVO\nIMPOSSIBILE PROSEGUIRE</string>
+    <string name="error4">APN ERRATO\nIMPOSSIBILE PROSEGUIRE</string>
+    <string name="error5">PASSWORD ERRATA\nAUTENTICAZIONE FALLITA</string>
+    <string name="error6">UTENTE NON ABILITATO\nALLA APPLICAZIONE</string>
+    <string name="error7">ERRORE DI RETE\nSERVER NON RAGGIUNGIBILE</string>
+    <string name="error8">ERRORE INTERNO AL SERVER\nDATI NON DISPONIBILI</string>
+    <string name="error_button1">DISATTIVA</string>
+    <string name="error_button2">MODIFICA</string>
+</resources>

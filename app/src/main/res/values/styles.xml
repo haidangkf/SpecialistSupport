@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Welcome" parent="AppTheme">
+        <item name="colorPrimary">@color/primario_1</item>
+        <item name="colorPrimaryDark">@android:color/transparent</item>
+        <item name="colorAccent">@color/primario_2</item>
+    </style>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/primario_1</item>
+        <item name="colorPrimaryDark">@android:color/white</item><!-- todo scegli colore-->
+        <item name="colorAccent">@color/primario_2</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <!-- l'action mode (seleziona, copia e incolla...) sovrascrive la toolbar -->
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeBackground">@color/primario_1</item>
+    </style>
+
+    <style name="loginInput" parent="Welcome">
+        <item name="android:textColorHint">@color/grey_alfa</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="colorControlNormal">@color/primario_1</item>
+        <item name="colorControlActivated">@color/primario_2</item>
+    </style>
+
+    <style name="loginButton" parent="Welcome">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="colorButtonNormal">@color/primario_1</item>
+        <item name="colorControlHighlight">@color/ausiliario_a_03</item>
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:paddingBottom">20dp</item>
+    </style>
+</resources>

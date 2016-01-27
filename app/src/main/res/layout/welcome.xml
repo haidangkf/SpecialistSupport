@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center_vertical"
+              android:background="@android:color/white"
+              android:fitsSystemWindows="true"
+              android:id="@+id/layout">
+    <!-- perché due linear layout ? Perché se trovo un numero di telefono leggibile sulla SIM
+         posso fare il login senza richiedere user e password. I due layout rappresentano questa possibilità,
+         di default è visibile quello con la userid, ma durante onCreate, se ho un telefonico inverto questa
+         situazione e mostro layout per login senza password -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:id="@+id/userAndPassword"
+                  android:orientation="vertical"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:gravity="center_vertical"
+                  android:visibility="visible">
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/loginElementMargin"
+            android:contentDescription="@string/logo"
+            android:src="@mipmap/timlogo" />
+
+        <EditText
+            android:id="@+id/user"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_user"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/loginElementMargin"
+            android:layout_marginRight="@dimen/loginElementMargin"
+            android:gravity="center_horizontal"
+            android:singleLine="true"
+            android:maxLength="8"
+            android:theme="@style/loginInput"
+            />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/password"
+            android:hint="@string/hint_pwd"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/loginElementMargin"
+            android:layout_marginRight="@dimen/loginElementMargin"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:singleLine="true"
+            android:theme="@style/loginInput"/>
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login_button"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/loginElementMargin"
+            android:layout_marginRight="@dimen/loginElementMargin"
+            android:layout_marginTop="@dimen/loginElementMarginVertical"
+            android:theme="@style/loginButton"
+            android:onClick="login"
+            android:enabled="true" />
+        <ProgressBar
+            android:id="@+id/loadingPanel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:progressDrawable="@drawable/progress"
+            android:indeterminateDrawable="@drawable/progress"
+            android:indeterminate="true"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/loginElementMarginVertical" />
+    </LinearLayout>
+    <!-- Da disegnare, questo è fatto con poca cura -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="vertical"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:id="@+id/phoneLogin"
+                  android:gravity="center_vertical"
+                  android:visibility="gone"
+                  android:weightSum="1">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageViewPhone"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/loginElementMarginVertical"
+            android:contentDescription="@string/logo"
+            android:src="@mipmap/timlogo" />
+
+        <ImageView
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:id="@+id/imageView2"
+            android:layout_gravity="center_horizontal"
+            android:tint="@color/primario_1"
+            android:src="@drawable/avatar"
+            android:contentDescription="@string/avatar" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/nomeCognome"
+            android:textSize="20sp"
+            android:gravity="center_horizontal"
+            android:text="@string/hint_search"
+            android:textColor="@android:color/black" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_marginTop="10dp"
+            android:weightSum="1"
+            >
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="@string/btnUtente"
+                android:id="@+id/cambiaUtente"
+                android:onClick="cambiaUtente"
+                android:theme="@style/loginButton"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="0.3" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="@string/btnLogin"
+                android:id="@+id/autoLogin"
+                android:onClick="loginWithPhoneNumber"
+                android:theme="@style/loginButton"
+                android:layout_marginStart="5dp"
+                android:layout_weight="0.3" />
+            <ProgressBar
+                android:id="@+id/loadingPanelPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:progressDrawable="@drawable/progress"
+                android:indeterminateDrawable="@drawable/progress"
+                android:indeterminate="true"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
