@@ -6,7 +6,7 @@
         <item name="colorAccent">@color/primario_2</item>
     </style>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primario_1</item>
         <item name="colorPrimaryDark">@android:color/white</item><!-- todo scegli colore-->
@@ -17,6 +17,9 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="actionModeBackground">@color/primario_1</item>
     </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <style name="loginInput" parent="Welcome">
         <item name="android:textColorHint">@color/grey_alfa</item>

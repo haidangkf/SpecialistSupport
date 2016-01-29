@@ -4,6 +4,9 @@
     <string name="avatar">avatar</string>
     <string name="btnUtente">CAMBIA</string>
     <string name="btnLogin">ENTRA</string>
+    <!-- Menu azioni -->
+    <string name="action_settings">Impostazioni</string>
+    <string name="action_logout">Logout</string>
     <!-- Shared preference: non utilizzare default, in modo che il processo di login sia indipendente da dati app-->
     <string name="USERINFO">it.telecomitalia.my.affiancamenti.USERINFO</string>
     <string name="TELEFONO">it.telecomitalia.my.affiancamenti.TELEFONO</string>
