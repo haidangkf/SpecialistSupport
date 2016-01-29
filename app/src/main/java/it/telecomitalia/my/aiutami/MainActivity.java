@@ -41,6 +41,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.GridView;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -66,6 +69,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        GridView gridview = (GridView)findViewById(R.id.gridView);
+
+        final String[] test = new String[]{
+                "Altri eventi",
+                "Aperture straordinarie",
+                "visite guidate",
+                "da valutare",
+                "Estate Fiorentina",
+                "Fiere, mercati",
+                "Film festival",
+                "Mostre",
+                "Musica classica, opera e balletto",
+                "Musica rock, jazz, pop, contemporanea",
+                "News",
+                "Readings, incontri letterari, conferenze",
+                "Sport",
+                "Teatro",
+                "Tradizioni popolari",
+                "Walking"
+        };
+        gridview.setAdapter( new CategoriesAdapter(this, test) );
+
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                Snackbar.make(v, test[position], Snackbar.LENGTH_LONG).show();
+            }
+        });
+
 
         //test XML todo
         String xml = "";
