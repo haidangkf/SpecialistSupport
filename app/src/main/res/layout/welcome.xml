@@ -60,7 +60,7 @@
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/login_button"
+            android:text="@string/btnLogin"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="@dimen/loginElementMargin"
             android:layout_marginRight="@dimen/loginElementMargin"

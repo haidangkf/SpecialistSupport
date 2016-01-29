@@ -1,21 +1,34 @@
 <resources>
     <string name="app_name">Aiutami</string>
+    <!-- content description images -->
+    <string name="main_content_header">background</string>
     <string name="logo">logo_telecom_tim</string>
     <string name="avatar">avatar</string>
-    <string name="btnUtente">CAMBIA</string>
-    <string name="btnLogin">ENTRA</string>
     <!-- Menu azioni -->
+    <string name="action_search">Cerca</string>
+    <string name="action_reload">Aggiorna</string>
     <string name="action_settings">Impostazioni</string>
     <string name="action_logout">Logout</string>
+    <!-- Menu Drawer -->
+    <string name="nav_home">Prima Pagina</string>
+    <string name="nav_search">Cerca</string>
+    <string name="nav_favs">Favoriti</string>
+    <string name="nav_notifications">Notifiche</string>
+    <string name="nav_question">Le mie domande</string>
+    <string name="nav_answer">Le mie risposte</string>
+    <string name="nav_logout">Esci</string>
+    <string name="categories_title">NAVIGA TRA LE CATEGORIE</string>
+    <string name="cat_1">Categoria 1</string>
+    <string name="cat_2">Categoria 2</string>
     <!-- Shared preference: non utilizzare default, in modo che il processo di login sia indipendente da dati app-->
     <string name="USERINFO">it.telecomitalia.my.affiancamenti.USERINFO</string>
     <string name="TELEFONO">it.telecomitalia.my.affiancamenti.TELEFONO</string>
     <!-- Elementi per maschere di login -->
-    <string name="login_button">Entra</string>
+    <string name="btnUtente">CAMBIA</string>
+    <string name="btnLogin">ENTRA</string>
     <string name="hint_user">matricola</string>
     <string name="hint_pwd">password</string>
     <string name="hint_search">Ricerco&#8230;</string>
-    <string name="title_activity_main">MainActivity</string>
     <!-- Errori in fase di login -->
     <string name="error1">INSERIRE MATRICOLA E PASSWORD\nDI POSTA ELETTRONICA</string>
     <string name="error2">NESSUNA CONNESSIONE DI RETE DISPONIBILE</string>

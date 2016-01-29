@@ -2,6 +2,8 @@
 <resources>
 
     <color name="grey_alfa">#55000000</color>
+    <color name="dark_primario_1">#003e80</color>
+    <color name="dark_primario_2">#e60027</color>
     <!-- PALETTE TIM 2016 -->
     <!-- primari -->
     <color name="primario_1">#004691</color>
