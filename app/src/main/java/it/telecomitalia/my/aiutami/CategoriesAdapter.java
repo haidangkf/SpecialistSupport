@@ -1,72 +1,64 @@
 package it.telecomitalia.my.aiutami;
 
-import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class CategoriesAdapter extends BaseAdapter {
+public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.ViewHolder> {
 
-    private Context context;
-    private String[] obj;
+    private static OnItemClickListener listener;
 
-    private class ViewHolder {
+    @Override
+    public CategoriesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        public TextView text;
+        LayoutInflater inflater = LayoutInflater.from( parent.getContext() );
+        View view = inflater.inflate(R.layout.category_element, parent, false);
+        return new ViewHolder(view);
 
-        public ViewHolder(View view){
-            text = (TextView) view.findViewById(R.id.textView);
+    }
+
+    @Override
+    public void onBindViewHolder(CategoriesAdapter.ViewHolder viewHolder, int position) {
+        // Get the data model based on position
+        viewHolder.text1.setText("Bacon");
+        viewHolder.text2.setText("Bacon ipsum dolor amet pork belly meatball kevin spare ribs. Frankfurter swine corned beef meatloaf, strip steak.");
+    }
+
+    @Override
+    public int getItemCount() {
+        return 30;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View itemView, int position);
+    }
+
+    // Define the method that allows the parent activity or fragment to define the listener
+    public void setOnItemClickListener(OnItemClickListener _listener) {
+        listener = _listener;
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        TextView text1;
+        TextView text2;
+
+        public ViewHolder(final View itemView) {
+
+            super(itemView);
+            text1 = (TextView) itemView.findViewById(android.R.id.text1);
+            text2 = (TextView) itemView.findViewById(android.R.id.text2);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Triggers click upwards to the adapter on click
+                    if (listener != null)
+                        listener.onItemClick( itemView, getLayoutPosition());
+                }
+            });
         }
-    }
-
-    public CategoriesAdapter(Context _context, String[] _obj) {
-        super();
-        context = _context;
-        obj = _obj;
-    }
-
-    @Override
-    public View getView(int position, View rowView, ViewGroup parent){
-
-        ViewHolder holder;
-
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        if( rowView == null) {
-            rowView = inflater.inflate(R.layout.category_element, parent, false);
-            holder = new ViewHolder(rowView);
-            rowView.setTag(holder);
-        }else{
-            holder = (ViewHolder) rowView.getTag();
-        }
-
-        rowView.setSelected( false );
-
-        String capitalized = obj[position].substring(0, 1).toUpperCase() + obj[position].substring(1);
-        holder.text.setText( capitalized );
-        return rowView;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public boolean hasStableIds() {
-        return true;
-    }
-
-    @Override
-    public Object getItem(int arg0) {
-        return obj[arg0];
-    }
-
-    @Override
-    public int getCount() {
-        return obj.length;
     }
 
 }
