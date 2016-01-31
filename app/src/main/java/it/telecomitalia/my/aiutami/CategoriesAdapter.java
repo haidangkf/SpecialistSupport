@@ -1,14 +1,25 @@
 package it.telecomitalia.my.aiutami;
 
+import android.graphics.Color;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.List;
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.ViewHolder> {
 
-    private static OnItemClickListener listener;
+    private List<Object> list;
+
+    public CategoriesAdapter(List<Object> list){
+
+        this.list = list;
+
+    }
 
     @Override
     public CategoriesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -21,44 +32,41 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
 
     @Override
     public void onBindViewHolder(CategoriesAdapter.ViewHolder viewHolder, int position) {
-        // Get the data model based on position
-        viewHolder.text1.setText("Bacon");
-        viewHolder.text2.setText("Bacon ipsum dolor amet pork belly meatball kevin spare ribs. Frankfurter swine corned beef meatloaf, strip steak.");
+
+        viewHolder.title.setText( ((Category)list.get(position)).getName() );
+        viewHolder.background.setBackgroundColor(
+                Color.parseColor(
+                        ((Category)list.get(position)).getColor()
+                )
+        );
+
     }
 
     @Override
     public int getItemCount() {
-        return 30;
+
+        return list.size();
+
     }
 
-    public interface OnItemClickListener {
-        void onItemClick(View itemView, int position);
-    }
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
-    // Define the method that allows the parent activity or fragment to define the listener
-    public void setOnItemClickListener(OnItemClickListener _listener) {
-        listener = _listener;
-    }
+        TextView title;
+        ImageView background;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-
-        TextView text1;
-        TextView text2;
-
-        public ViewHolder(final View itemView) {
+        public ViewHolder( View itemView) {
 
             super(itemView);
-            text1 = (TextView) itemView.findViewById(android.R.id.text1);
-            text2 = (TextView) itemView.findViewById(android.R.id.text2);
+            title      = (TextView) itemView.findViewById(R.id.cat_title);
+            background = (ImageView) itemView.findViewById(R.id.imageView);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Triggers click upwards to the adapter on click
-                    if (listener != null)
-                        listener.onItemClick( itemView, getLayoutPosition());
+                    Snackbar.make(v, "Hello", Snackbar.LENGTH_LONG).show();
                 }
             });
         }
+
     }
 
 }

@@ -3,7 +3,7 @@ package it.telecomitalia.my.aiutami;
 import android.util.Log;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
+import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import java.io.ByteArrayInputStream;
@@ -39,6 +39,7 @@ public class XMLReader {
      * @return oggetto Document
      * @throws GodzillioniDiXMLExceptions
      */
+    @SuppressWarnings("unused")
     public Document getXMLData(String xml) throws GodzillioniDiXMLExceptions{
 
         try {
@@ -68,7 +69,7 @@ public class XMLReader {
     /**
      * Metodo per ricavare la lista degli oggetti indicati come parametro, all'interno del file xml.
      * è importante che la classe che si vuole utilizzare come tipo per gli elementi della List,
-     * abbia un costruttore che accetta come parametro un oggetto Node, altrimenti viene lanciata
+     * abbia un costruttore che accetta come parametro un oggetto org.w3c.dom.Element, altrimenti viene lanciata
      * una NoSuchMethodException attraverso la classe GodzillioniDiXMLExceptions
      * @param document Document creato attraverso il metodo getXMLData
      * @param classType Classe degli oggetti che popoleranno la List
@@ -82,16 +83,16 @@ public class XMLReader {
 
             List<Object> list = new ArrayList<>();
             NodeList nodes = document.getDocumentElement().getChildNodes();
-            Constructor c = classType.getConstructor(Node.class);
+            Constructor c = classType.getConstructor(Element.class);
             for (int i = 0; i < nodes.getLength(); i++) {
-                list.add(c.newInstance(nodes.item(i)));
+                list.add(c.newInstance( nodes.item(i) ));
             }
             //non sono riuscito ad utilizzare i generics :( todo
             return list;
 
         }catch (NoSuchMethodException e){
             Log.e("NoSuchMethodException",
-                    "La classe deve implementare almeno un costruttore che abbia come parametro un oggetto Node");
+                    "La classe deve implementare almeno un costruttore che abbia come parametro un oggetto Element");
             throw new GodzillioniDiXMLExceptions();
         }catch (Exception e){
             throw new GodzillioniDiXMLExceptions();

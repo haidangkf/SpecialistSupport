@@ -1,22 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:paddingBottom="16dp"
-              android:paddingStart="72dp"
-              android:paddingEnd="16dp"
-              android:paddingTop="16dp">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/row"
+             android:orientation="vertical"
+             android:layout_width="fill_parent"
+             android:layout_height="150dp">
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/imageView"
+        android:src="@null"
+        android:background="@color/ausiliario_b_06"
+        android:contentDescription="@string/app_name"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="centerCrop"/>
 
     <TextView
-        android:id="@android:id/text1"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@android:id/text2"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:id="@+id/cat_title"
+        android:textSize="15sp"
+        android:textColor="@android:color/white"
+        android:gravity="bottom"
+        android:layout_gravity="start|bottom"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="5dp"
+        android:background="@color/grey_alfa"
+        android:paddingTop="5dp"
+        android:lines="1"
+        android:maxLines="1"
+        android:ellipsize="end"/>
+</FrameLayout>

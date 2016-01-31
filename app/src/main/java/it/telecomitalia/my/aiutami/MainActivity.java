@@ -29,7 +29,6 @@ package it.telecomitalia.my.aiutami;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -40,11 +39,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -53,8 +50,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .setAction("Action", null).show();
             }
         });
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, 0, 0);
         drawer.setDrawerListener(toggle);
@@ -71,21 +71,57 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        RecyclerView rv = (RecyclerView) findViewById(R.id.recyclerview);
-        rv.setLayoutManager(new LinearLayoutManager(this));
-        rv.setAdapter(new CategoriesAdapter());
+        //todo da webserver o salvataggio locale
+        String xml = "<categories>" +
+                "<category>" +
+                "<name>Topolino</name>" +
+                "<color>#dcc89b</color>" +
+                "<important>false</important>" +
+                "<image/>" +
+                "<elements>8</elements>" +
+                "</category>" +
 
+                "<category>" +
+                "<name>Paperino</name>" +
+                "<color>#b4d28c</color>" +
+                "<important>false</important>" +
+                "<image/>" +
+                "<elements>7</elements>" +
+                "</category>" +
 
-        //test XML todo
-        String xml = "";
+                "<category>" +
+                "<name>Pluto</name>" +
+                "<color>#ff825a</color>" +
+                "<important>false</important>" +
+                "<image/>" +
+                "<elements>6</elements>" +
+                "</category>" +
+
+                "<category>" +
+                "<name>Pippo</name>" +
+                "<color>#aaa5c8</color>" +
+                "<important>false</important>" +
+                "<image/>" +
+                "<elements>18</elements>" +
+                "</category>" +
+
+                "<category>" +
+                "<name>Altra categoria</name>" +
+                "<color>#dc8200</color>" +
+                "<important>false</important>" +
+                "<image/>" +
+                "<elements>2</elements>" +
+                "</category>" +
+
+                "</categories>";
+
         try {
 
-            XMLReader x = new XMLReader();
-            List<Object> l = x.getObjectsList(x.getXMLData(xml), Ticket.class);
-
-            for (Object t : l) {
-                Log.i("test", ((Ticket) t).getDataOraInizioSegnalazione());
-            }
+            XMLReader x     = new XMLReader();
+            List<Object> l  = x.getObjectsList(x.getXMLData(xml), Category.class);
+            RecyclerView rv = (RecyclerView) findViewById(R.id.recyclerview);
+            rv.setLayoutManager(new LinearLayoutManager(this));
+            rv.setAdapter(new CategoriesAdapter(l));
 
         }catch (XMLReader.GodzillioniDiXMLExceptions e){
             e.printStackTrace();
