@@ -1,7 +1,8 @@
 package it.telecomitalia.my.aiutami;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +15,12 @@ import java.util.List;
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.ViewHolder> {
 
     private List<Object> list;
+    Activity activity;
 
-    public CategoriesAdapter(List<Object> list){
+    public CategoriesAdapter(Activity activity, List<Object> list){
 
-        this.list = list;
-
+        this.list    = list;
+        this.activity = activity;
     }
 
     @Override
@@ -62,7 +64,9 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Snackbar.make(v, "Hello", Snackbar.LENGTH_LONG).show();
+
+                    activity.startActivity( new Intent(activity, QuestionList.class) );
+
                 }
             });
         }

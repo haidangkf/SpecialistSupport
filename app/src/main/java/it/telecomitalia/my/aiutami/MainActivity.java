@@ -26,25 +26,17 @@
  *******************************************************************************/
 package it.telecomitalia.my.aiutami;
 
-import android.content.Context;
-import android.content.Intent;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends ElementsForEveryActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,14 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        this.insertDefaultFab();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, 0, 0);
@@ -71,61 +56,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //todo da webserver o salvataggio locale
-        String xml = "<categories>" +
-                "<category>" +
-                "<name>Topolino</name>" +
-                "<color>#dcc89b</color>" +
-                "<important>false</important>" +
-                "<image/>" +
-                "<elements>8</elements>" +
-                "</category>" +
+        HomePageFragment fragment = new HomePageFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.main_container, fragment).commit();
 
-                "<category>" +
-                "<name>Paperino</name>" +
-                "<color>#b4d28c</color>" +
-                "<important>false</important>" +
-                "<image/>" +
-                "<elements>7</elements>" +
-                "</category>" +
-
-                "<category>" +
-                "<name>Pluto</name>" +
-                "<color>#ff825a</color>" +
-                "<important>false</important>" +
-                "<image/>" +
-                "<elements>6</elements>" +
-                "</category>" +
-
-                "<category>" +
-                "<name>Pippo</name>" +
-                "<color>#aaa5c8</color>" +
-                "<important>false</important>" +
-                "<image/>" +
-                "<elements>18</elements>" +
-                "</category>" +
-
-                "<category>" +
-                "<name>Altra categoria</name>" +
-                "<color>#dc8200</color>" +
-                "<important>false</important>" +
-                "<image/>" +
-                "<elements>2</elements>" +
-                "</category>" +
-
-                "</categories>";
-
-        try {
-
-            XMLReader x     = new XMLReader();
-            List<Object> l  = x.getObjectsList(x.getXMLData(xml), Category.class);
-            RecyclerView rv = (RecyclerView) findViewById(R.id.recyclerview);
-            rv.setLayoutManager(new LinearLayoutManager(this));
-            rv.setAdapter(new CategoriesAdapter(l));
-
-        }catch (XMLReader.GodzillioniDiXMLExceptions e){
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -138,48 +72,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_search) {
-            return true;
-        }
-        if (id == R.id.action_reload) {
-            return true;
-        }
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        if (id == R.id.action_logout) {
-            logout();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        Fragment fragment = null;
         if (id == R.id.nav_home) {
-            // Handle the action
+            fragment = new HomePageFragment();
         } else if (id == R.id.nav_favs) {
-
+            fragment = new FavouritesFragment();
         } else if (id == R.id.nav_question) {
 
         } else if (id == R.id.nav_answer) {
@@ -191,18 +95,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.cat_2) {
 
         }
-
+        if(fragment!=null) {
+            getFragmentManager().beginTransaction().replace(R.id.main_container, fragment).commit();
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    public void logout(){
-
-        getSharedPreferences(getString(R.string.USERINFO), Context.MODE_PRIVATE).edit().clear().apply();
-        startActivity(new Intent( MainActivity.this, Welcome.class ));
-        finish();
-
     }
 
 }
