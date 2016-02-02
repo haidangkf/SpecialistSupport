@@ -6,4 +6,4 @@
     android:layout_gravity="bottom|end"
     android:layout_margin="@dimen/fab_margin"
     android:tint="@android:color/white"
-    android:src="@drawable/ic_add"/>
+    android:src="@drawable/ic_fab_add"/>

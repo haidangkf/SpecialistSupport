@@ -17,7 +17,7 @@
     <string name="nav_question">Le mie domande</string>
     <string name="nav_answer">Le mie risposte</string>
     <string name="nav_logout">Esci</string>
-    <string name="categories_title">NAVIGA TRA LE CATEGORIE</string>
+    <string name="categories_title">SFOGLIA LE CATEGORIE</string>
     <string name="cat_1">Categoria 1</string>
     <string name="cat_2">Categoria 2</string>
     <!-- Shared preference: non utilizzare default, in modo che il processo di login sia indipendente da dati app-->

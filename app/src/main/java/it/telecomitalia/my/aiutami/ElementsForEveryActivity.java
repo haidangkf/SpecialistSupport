@@ -62,7 +62,7 @@ public abstract class ElementsForEveryActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Inserisco una nuova domanda\no chiedo supporto allo specialist", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });

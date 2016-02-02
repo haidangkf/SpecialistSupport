@@ -15,12 +15,13 @@ import java.util.List;
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.ViewHolder> {
 
     private List<Object> list;
-    Activity activity;
+    private Activity activity;
 
     public CategoriesAdapter(Activity activity, List<Object> list){
 
         this.list    = list;
         this.activity = activity;
+
     }
 
     @Override
@@ -35,12 +36,10 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
     @Override
     public void onBindViewHolder(CategoriesAdapter.ViewHolder viewHolder, int position) {
 
-        viewHolder.title.setText( ((Category)list.get(position)).getName() );
-        viewHolder.background.setBackgroundColor(
-                Color.parseColor(
-                        ((Category)list.get(position)).getColor()
-                )
-        );
+        viewHolder.titleText = ((Category)list.get(position)).getName();
+        viewHolder.color     = Color.parseColor(((Category) list.get(position)).getColor());
+        viewHolder.title.setText( viewHolder.titleText );
+        viewHolder.background.setBackgroundColor( viewHolder.color );
 
     }
 
@@ -55,6 +54,8 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
 
         TextView title;
         ImageView background;
+        int color;
+        String titleText;
 
         public ViewHolder( View itemView) {
 
@@ -65,7 +66,10 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
                 @Override
                 public void onClick(View v) {
 
-                    activity.startActivity( new Intent(activity, QuestionList.class) );
+                    Intent intent = new Intent(activity, QuestionsListActivity.class);
+                    intent.putExtra("color", color);
+                    intent.putExtra("title", titleText);
+                    activity.startActivity(intent);
 
                 }
             });

@@ -28,15 +28,24 @@ package it.telecomitalia.my.aiutami;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 public class MainActivity extends ElementsForEveryActivity implements NavigationView.OnNavigationItemSelectedListener{
+
+    CollapsingToolbarLayout ctl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +53,7 @@ public class MainActivity extends ElementsForEveryActivity implements Navigation
         setContentView(R.layout.main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ctl = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         setSupportActionBar(toolbar);
 
         this.insertDefaultFab();
@@ -60,6 +70,9 @@ public class MainActivity extends ElementsForEveryActivity implements Navigation
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.main_container, fragment).commit();
 
+        ctl.setTitle("Categorie");
+        navigationHeaderinfo();
+        setAllMenuCounters();
     }
 
     @Override
@@ -72,22 +85,23 @@ public class MainActivity extends ElementsForEveryActivity implements Navigation
         }
     }
 
-
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         Fragment fragment = null;
+        String title = null;
         if (id == R.id.nav_home) {
+            title = "Categorie";
             fragment = new HomePageFragment();
+        } else if (id == R.id.nav_search) {
         } else if (id == R.id.nav_favs) {
+            title = item.getTitle().toString();
             fragment = new FavouritesFragment();
+        } else if (id == R.id.nav_notifications) {
         } else if (id == R.id.nav_question) {
-
         } else if (id == R.id.nav_answer) {
-
         } else if (id == R.id.nav_logout) {
             logout();
         } else if (id == R.id.cat_1) {
@@ -97,10 +111,56 @@ public class MainActivity extends ElementsForEveryActivity implements Navigation
         }
         if(fragment!=null) {
             getFragmentManager().beginTransaction().replace(R.id.main_container, fragment).commit();
+            ctl.setTitle(title);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
+    public void navigationHeaderinfo(){
+
+        /* Prendo le informazioni utente e le mando in output nella parte alta del drawer, il
+        * cui layout è definito da nav_header.xml */
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.USERINFO), Context.MODE_PRIVATE);
+        NavigationView navigationView = (NavigationView)findViewById(R.id.nav_view);
+        View header = navigationView.getHeaderView(0);
+
+        TextView name     = (TextView)header.findViewById(R.id.nomeCognome);
+        TextView details  = (TextView)header.findViewById(R.id.descrizione);
+        ImageView img     = (ImageView)header.findViewById(R.id.profilo);
+        if( sharedPref.contains("matricola") ){
+
+            String profilo = sharedPref.getString("profilo", null);
+            if( profilo!=null){
+                if( profilo.equals("Specialist") ) img.setImageResource(R.drawable.ic_nav_user_spec);
+                if( profilo.equals("User") ) img.setImageResource(R.drawable.ic_nav_user_normal);
+                if( profilo.equals("Guest") ) img.setImageResource(R.drawable.ic_nav_user_resp);
+            }
+
+            name.setText( sharedPref.getString("nome", null) );
+            details.setText( sharedPref.getString("bacino", null) );
+        }
+
+    }
+
+    private void setAllMenuCounters(){
+
+        int test = (int)(Math.random() * ( 17 - 2 ));
+        setMenuCounter(R.id.nav_notifications, test );
+
+    }
+
+    private void setMenuCounter(@IdRes int itemId, int count) {
+
+        NavigationView navigationView = (NavigationView)findViewById(R.id.nav_view);
+        MenuItem menuItem = navigationView.getMenu().findItem(itemId);
+        TextView view = (TextView) menuItem.getActionView();
+        String value = null;
+        if( count > 0 ){
+            value = String.valueOf(count);
+            menuItem.setIcon(R.drawable.ic_menu_notifications_alert);
+        }
+        view.setText(value);
+    }
 }
