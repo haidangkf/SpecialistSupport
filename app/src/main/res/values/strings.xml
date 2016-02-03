@@ -18,11 +18,11 @@
     <string name="nav_answer">Le mie risposte</string>
     <string name="nav_logout">Esci</string>
     <string name="categories_title">SFOGLIA LE CATEGORIE</string>
-    <string name="cat_1">Categoria 1</string>
-    <string name="cat_2">Categoria 2</string>
+    <string name="cat_1">Novità</string>
+    <string name="cat_2">In Evidenza</string>
     <!-- Shared preference: non utilizzare default, in modo che il processo di login sia indipendente da dati app-->
-    <string name="USERINFO">it.telecomitalia.my.affiancamenti.USERINFO</string>
-    <string name="TELEFONO">it.telecomitalia.my.affiancamenti.TELEFONO</string>
+    <string name="USERINFO">it.telecomitalia.my.support.USERINFO</string>
+    <string name="TELEFONO">it.telecomitalia.my.support.TELEFONO</string>
     <!-- Elementi per maschere di login -->
     <string name="btnUtente">CAMBIA</string>
     <string name="btnLogin">ENTRA</string>

@@ -50,9 +50,12 @@ import com.unboundid.ldap.sdk.controls.PasswordExpiredControl;
 import com.unboundid.util.ssl.SSLUtil;
 import com.unboundid.util.ssl.TrustAllTrustManager;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
-
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.ByteArrayInputStream;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -101,7 +104,7 @@ public class IntranetServices extends IntentService {
      * variazioni a seconda dei cambiamenti avvenuti sul webserver. */
     protected class WebServices{
 
-        public static final String PROFILING      = "userProfile.php";
+        public static final String PROFILING      = "userProfile.xml";
         public static final String UPDATE         = "versioning.json";
 
     }
@@ -385,7 +388,6 @@ public class IntranetServices extends IntentService {
 
             String esito = getRequest("https://" + SERVER + PATH + DIRSERVICES +WebServices.PROFILING + "?m=" + matricola);
             if( !esito.isEmpty() ){
-                JSONArray jArray = new JSONArray(esito);
                 SharedPreferences sharedPref = getSharedPreferences(getString(R.string.USERINFO), Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 //salvo gli attributi da LDAP...
@@ -395,11 +397,19 @@ public class IntranetServices extends IntentService {
                 editor.putString("bacino", userInfo.get("bacino"));
                 editor.putString("sede", userInfo.get("sede"));
                 editor.putString("descrizione", userInfo.get("descrizione"));
-                //... e quelli dalla profilazione locale. Accedo a indice 0 perchè matricola è PK, quindi unica.
-                editor.putString("ast", jArray.getJSONObject(0).getString("astAbbreviato") );
-                editor.putString("profilo", jArray.getJSONObject(0).getString("profilo") );
-                editor.putString("linea", jArray.getJSONObject(0).getString("bacino"));
-                editor.putString("idStruttura", jArray.getJSONObject(0).getString("idStruttura"));
+                //... e quelli dalla profilazione locale. in questa app, alcuni sono duplicati delle informazioni di
+                // LDAP ma preferisco tenerli così per una migliore manutenzione su DB locale
+                DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+                Document doc       = db.parse(new ByteArrayInputStream( esito.getBytes("UTF-8") ));
+                Element node       = doc.getDocumentElement(); // matricola unica, nodo unico ! user è root xml
+                String profilo     = node.getElementsByTagName("profilo").item(0).getTextContent().trim();
+                String indirizzo   = node.getElementsByTagName("indirizzo").item(0).getTextContent().trim();
+                String citta       = node.getElementsByTagName("citta").item(0).getTextContent().trim();
+                String settore     = node.getElementsByTagName("struttura").item(0).getTextContent().trim();
+                editor.putString("profilo", profilo );
+                editor.putString("settore", settore );
+                editor.putString("citta", citta );
+                editor.putString("indirizzo", indirizzo );
                 editor.apply();
                 localIntent.putExtra("esito", true);
             }else{
