@@ -2,6 +2,8 @@ package it.telecomitalia.my.aiutami;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +33,32 @@ public class HomePageFragment extends Fragment {
 
         View layout     = inflater.inflate(R.layout.f_home_page, container, false);
         RecyclerView rv = (RecyclerView) layout.findViewById(R.id.recyclerview);
+        final SwipeRefreshLayout refresh = (SwipeRefreshLayout) layout.findViewById(R.id.swipeContainer);
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                // guides.codepath.com/android/Implementing-Pull-to-Refresh-Guide#step-2-setup-swiperefreshlayout
+                // TODO leggi guida su RV e cose da fare con i dati
+
+                new CountDownTimer(5000,1000){
+                    @Override
+                    public void onTick(long miliseconds){}
+                    @Override
+                    public void onFinish(){
+                        refresh.setRefreshing(false);
+                    }
+                }.start();
+
+            }
+        });
+        refresh.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
 
         //todo da webserver o salvataggio locale
         String xml = "<categories>" +

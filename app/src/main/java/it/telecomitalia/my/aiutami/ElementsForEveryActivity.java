@@ -34,9 +34,6 @@ public abstract class ElementsForEveryActivity extends AppCompatActivity {
         if (id == R.id.action_search) {
             return true;
         }
-        if (id == R.id.action_reload) {
-            return true;
-        }
         if (id == R.id.action_settings) {
             return true;
         }
