@@ -40,4 +40,6 @@
     <string name="error8">ERRORE INTERNO AL SERVER\nDATI NON DISPONIBILI</string>
     <string name="error_button1">DISATTIVA</string>
     <string name="error_button2">MODIFICA</string>
+    <!-- Snackbar messages -->
+    <string name="error_refresh">Errore di connessione.\nRiprovare in seguito</string>
 </resources>

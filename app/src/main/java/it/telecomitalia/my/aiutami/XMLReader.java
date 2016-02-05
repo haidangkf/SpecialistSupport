@@ -12,8 +12,6 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.List;
-
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -76,12 +74,12 @@ public class XMLReader {
      * @return List con elementi di classe Object
      * @throws GodzillioniDiXMLExceptions
      */
-    public List<Object> getObjectsList(Document document, Class<?> classType)
+    public ArrayList<Object> getObjectsList(Document document, Class<?> classType)
             throws GodzillioniDiXMLExceptions {
 
         try {
 
-            List<Object> list = new ArrayList<>();
+            ArrayList<Object> list = new ArrayList<>();
             NodeList nodes = document.getDocumentElement().getChildNodes();
             Constructor c = classType.getConstructor(Element.class);
             for (int i = 0; i < nodes.getLength(); i++) {

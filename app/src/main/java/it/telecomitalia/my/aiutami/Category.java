@@ -1,8 +1,9 @@
 package it.telecomitalia.my.aiutami;
 
 import org.w3c.dom.Element;
+import java.io.Serializable;
 
-public class Category {
+public class Category implements Serializable {
 
     private String name;
     private String color;

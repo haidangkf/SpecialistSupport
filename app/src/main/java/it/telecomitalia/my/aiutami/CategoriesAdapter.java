@@ -9,15 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.List;
+import java.util.ArrayList;
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.ViewHolder> {
 
-    private List<Object> list;
+    private ArrayList<Category> list;
     private Activity activity;
 
-    public CategoriesAdapter(Activity activity, List<Object> list){
+    public CategoriesAdapter(Activity activity, ArrayList<Category> list){
 
         this.list    = list;
         this.activity = activity;
@@ -36,8 +35,8 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
     @Override
     public void onBindViewHolder(CategoriesAdapter.ViewHolder viewHolder, int position) {
 
-        viewHolder.titleText = ((Category)list.get(position)).getName();
-        viewHolder.color     = Color.parseColor(((Category) list.get(position)).getColor());
+        viewHolder.titleText = ( list.get(position) ).getName();
+        viewHolder.color     = Color.parseColor( ( list.get(position) ).getColor());
         viewHolder.title.setText( viewHolder.titleText );
         viewHolder.background.setBackgroundColor( viewHolder.color );
 
@@ -46,7 +45,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
     @Override
     public int getItemCount() {
 
-        return list.size();
+        return list!=null ? list.size() : 0 ;
 
     }
 

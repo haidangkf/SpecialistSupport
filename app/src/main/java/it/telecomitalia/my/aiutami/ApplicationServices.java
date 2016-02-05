@@ -28,8 +28,13 @@ package it.telecomitalia.my.aiutami;
 
 import android.app.IntentService;
 import android.content.Intent;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import java.util.ArrayList;
 
 public class ApplicationServices extends IntentService {
+
+    public static final String GETCATEGORIES = "it.telecomitalia.my.aiutami.getCategories";
 
     public ApplicationServices() {
         super("ApplicationServices");
@@ -39,14 +44,49 @@ public class ApplicationServices extends IntentService {
     protected void onHandleIntent(Intent intent) {
         final String service = intent.getStringExtra("application");
         switch (service) {
+
+            case GETCATEGORIES : this.getCategories(); break;
             default:
-                applicationNull();
+                applicationNull(service);
+
         }
     }
 
-    private void applicationNull(){
+    private void applicationNull(String service){
 
-        throw new UnsupportedOperationException("Servizio non implementato");
+        throw new UnsupportedOperationException("Servizio non implementato: "+service);
+
+    }
+
+    @SuppressWarnings("unchecked")
+    private void getCategories() {
+
+        OkHttpClient client  = new OkHttpClient();
+        String url = IntranetServices.getWebservicesURL() + "categories.xml";
+        Intent localIntent = new Intent(GETCATEGORIES);
+        ArrayList<Category> list = null;
+        try {
+            // prendo i dati dal webserver
+            IntranetServices.enableSSL(client, getAssets().open(IntranetServices.CERTNAME));
+            Request request = new Request.Builder().url(url).build();
+            String response = client.newCall(request).execute().body().string();
+            response = response.replace("\r\n","").replace("    ","");
+            // caching ?
+            //FileOutputStream outputStream = openFileOutput("categories", Context.MODE_PRIVATE);
+            //outputStream.write(response.getBytes());
+            //outputStream.close();
+            // tutto è andato bene, provo a fare il parse XML direttamente dello stream
+            XMLReader x = new XMLReader();
+            list = (ArrayList<Category>)(Object)x.getObjectsList(x.getXMLData(response), Category.class);
+            // andata anche con XML, si mette a disposizione la lista
+            localIntent.putExtra("categories", list);
+
+        } catch (Exception e) {
+            localIntent.putExtra("categories", list);
+
+        } finally {
+            sendBroadcast(localIntent);
+        }
 
     }
 }
