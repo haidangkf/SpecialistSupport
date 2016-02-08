@@ -158,9 +158,16 @@ public class HomePageFragment extends Fragment {
 
             list = (ArrayList<Category>)intent.getSerializableExtra("categories");
             drawList(list);
-            if ( isAdded() & list==null ){
-                Snackbar.make(refresh, getResources().getString(R.string.error_refresh), Snackbar.LENGTH_LONG).show();
+            // disegno la lista in ogni caso. se è null e non esiste salvataggio
+            // apparirà scermata bianca, altrimenti la lista. Avviso che qualcosa
+            // non è andato bene.
+            if( intent.getBooleanExtra("isCached", false) || list==null ){
+                // se i dati arrivano dalla cache oppure list è ancora null...
+                if ( isAdded() ){
+                    Snackbar.make(refresh, getResources().getString(R.string.error_refresh), Snackbar.LENGTH_LONG).show();
+                }
             }
+
         }
 
     }

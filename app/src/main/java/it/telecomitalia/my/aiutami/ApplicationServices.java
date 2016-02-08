@@ -27,9 +27,15 @@
 package it.telecomitalia.my.aiutami;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class ApplicationServices extends IntentService {
@@ -83,23 +89,48 @@ public class ApplicationServices extends IntentService {
         String url = IntranetServices.getWebservicesURL() + "categories.xml";
         Intent localIntent = new Intent(GETCATEGORIES);
         ArrayList<Category> list = null;
+        XMLReader x;
         try {
             // prendo i dati dal webserver
             IntranetServices.enableSSL(client, getAssets().open(IntranetServices.CERTNAME));
             Request request = new Request.Builder().url(url).build();
             String response = client.newCall(request).execute().body().string();
             response = response.replace("\r\n","").replace("    ","");
-            // caching ?
-            //FileOutputStream outputStream = openFileOutput("categories", Context.MODE_PRIVATE);
-            //outputStream.write(response.getBytes());
-            //outputStream.close();
             // tutto è andato bene, provo a fare il parse XML direttamente dello stream
-            XMLReader x = new XMLReader();
+            x = new XMLReader();
             list = (ArrayList<Category>)(Object)x.getObjectsList(x.getXMLData(response), Category.class);
             // andata anche con XML, si mette a disposizione la lista
             localIntent.putExtra("categories", list);
+            // caching. ci arrivo solo se tutto è andato bene, altrimenti
+            // è stata già sollevata un'eccezione ed il file non viene quindi toccato
+            FileOutputStream outputStream = openFileOutput("categories", Context.MODE_PRIVATE);
+            outputStream.write(response.getBytes());
+            outputStream.close();
 
         } catch (Exception e) {
+            // si spera che almeno una volta, l'operazione avvenga con successo. Ovvero che l'utente
+            // abbia apn configurato bene e che sia coperto da segnale mobile. In questo caso mi sono
+            // salvato il response del webservice ed in caso di errore mostro una schermata con i dati
+            // della cache, invece che la schermata bianca di assenza connessione.
+            String cachedXML;
+            try {
+                FileInputStream readFile = openFileInput("categories");
+                BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(readFile) );
+                StringBuilder stringBuilder = new StringBuilder();
+                while ( (cachedXML = bufferedReader.readLine()) != null ) {
+                    stringBuilder.append(cachedXML);
+                }
+                readFile.close();
+                x = new XMLReader();
+                list = (ArrayList<Category>)(Object)x.getObjectsList(x.getXMLData( stringBuilder.toString() ), Category.class);
+
+            }catch (Exception eFile){
+                eFile.printStackTrace();
+                localIntent.putExtra("categories", list);
+            }
+            // ho preso la cache, se esiste, e list è null oppure quello che ho letto dal file
+            // salvato in precedentza
+            localIntent.putExtra("isCached", true );
             localIntent.putExtra("categories", list);
 
         } finally {
