@@ -1,7 +1,7 @@
 /*******************************************************************************
  * This software is distributed under the following BSD license:
  *
- * Copyright (c) 2015, Marco Paoletti <mpao@me.com>, http://mpao.github.io
+ * Copyright (c) 2016, Marco Paoletti <mpao@me.com>, http://mpao.github.io
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,10 +36,18 @@ public class ApplicationServices extends IntentService {
 
     public static final String GETCATEGORIES = "it.telecomitalia.my.aiutami.getCategories";
 
+    /**
+     * Costruttore
+     */
     public ApplicationServices() {
         super("ApplicationServices");
     }
 
+    /**
+     * Metodo principale per la gestione delle operazioni, agisce in base all'intent "application"
+     * che riceve come parametro
+     * @param intent azione da svolgere
+     */
     @Override
     protected void onHandleIntent(Intent intent) {
         final String service = intent.getStringExtra("application");
@@ -52,12 +60,22 @@ public class ApplicationServices extends IntentService {
         }
     }
 
+    /**
+     * Se viene lanciata un'operazione non supportata, ovvero non definita,
+     * viene lanciata una eccezione
+     * @param service operazione da eseguire
+     */
     private void applicationNull(String service){
 
         throw new UnsupportedOperationException("Servizio non implementato: "+service);
 
     }
 
+    /**
+     * Metodo per collegarsi ad un webservice e scaricare la lista delle categorie. Tale lista
+     * viene trasformata in un ArrayList di oggetti che rappresentano ogni entry e viene
+     * passata con un intent a chi ha richiesto l'operazione
+     */
     @SuppressWarnings("unchecked")
     private void getCategories() {
 

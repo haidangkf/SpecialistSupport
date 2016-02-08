@@ -52,26 +52,34 @@ public class MainActivity extends ElementsForEveryActivity implements Navigation
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        // definizione della toolbar e dei suoi movimenti
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         ctl = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         setSupportActionBar(toolbar);
 
+        // il FAB compie azione di default definita nella super classe ElementsForEveryActivity
         this.insertDefaultFab();
 
+        // definizione comportamenti del drawer laterale
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, 0, 0);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        // definizione per la navigazione nel menu laterale
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        // viene inserito il fragment che fa da homepage alla applicazione
         HomePageFragment fragment = new HomePageFragment();
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.main_container, fragment).commit();
 
+        // cambio il titolo della Toolbar in base al tipo di fragment inserito
         ctl.setTitle("Categorie");
+        // aggiorno le informazioni nel header del drawer, inserendo proprietà utente
         navigationHeaderinfo();
+        // calcolo, e visualizzo eventuali notifiche nel drawer
         setAllMenuCounters();
     }
 
@@ -118,10 +126,12 @@ public class MainActivity extends ElementsForEveryActivity implements Navigation
         return true;
     }
 
+    /**
+     * Metodo per l'inserimento delle informazioni utente all'interno
+     * del header del drawer.
+     */
     public void navigationHeaderinfo(){
 
-        /* Prendo le informazioni utente e le mando in output nella parte alta del drawer, il
-        * cui layout è definito da nav_header.xml */
         SharedPreferences sharedPref = getSharedPreferences(getString(R.string.USERINFO), Context.MODE_PRIVATE);
         NavigationView navigationView = (NavigationView)findViewById(R.id.nav_view);
         View header = navigationView.getHeaderView(0);
@@ -129,8 +139,8 @@ public class MainActivity extends ElementsForEveryActivity implements Navigation
         TextView name     = (TextView)header.findViewById(R.id.nomeCognome);
         TextView details  = (TextView)header.findViewById(R.id.descrizione);
         ImageView img     = (ImageView)header.findViewById(R.id.profilo);
-        if( sharedPref.contains("matricola") ){
 
+        if( sharedPref.contains("matricola") ){
             String profilo = sharedPref.getString("profilo", null);
             if( profilo!=null){
                 if( profilo.equals("Specialist") ) img.setImageResource(R.drawable.ic_nav_user_spec);
@@ -144,6 +154,10 @@ public class MainActivity extends ElementsForEveryActivity implements Navigation
 
     }
 
+    /**
+     * Metodo che esegue per ogni voce il calcolo delle notifiche
+     * e prepara l'interno menù della applicazione
+     */
     private void setAllMenuCounters(){
 
         int test = (int)(Math.random() * ( 17 - 2 ));
@@ -151,6 +165,12 @@ public class MainActivity extends ElementsForEveryActivity implements Navigation
 
     }
 
+    /**
+     * Metodo che prepara esteticamente la visualizzazione delle notifiche
+     * se presenti
+     * @param itemId elemento del menu
+     * @param count numero delle notifiche da visualizzare
+     */
     private void setMenuCounter(@IdRes int itemId, int count) {
 
         NavigationView navigationView = (NavigationView)findViewById(R.id.nav_view);

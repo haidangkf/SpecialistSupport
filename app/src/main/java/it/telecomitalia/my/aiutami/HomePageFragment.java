@@ -1,3 +1,29 @@
+/*******************************************************************************
+ * This software is distributed under the following BSD license:
+ *
+ * Copyright (c) 2016, Marco Paoletti <mpao@me.com>, http://mpao.github.io
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *******************************************************************************/
 package it.telecomitalia.my.aiutami;
 
 import android.app.Fragment;
@@ -16,6 +42,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import java.util.ArrayList;
 
+/**
+ * Fragment che viene eseguito all'apertura della applicazione ed inserito
+ * nella activity principale
+ */
 public class HomePageFragment extends Fragment {
 
     AppCompatActivity activity;
@@ -23,6 +53,9 @@ public class HomePageFragment extends Fragment {
     SwipeRefreshLayout refresh;
     ArrayList<Category> list;
 
+    /**
+     * Costruttore di default
+     */
     public HomePageFragment() {
         // Required empty public constructor
     }
@@ -40,6 +73,7 @@ public class HomePageFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        // aggiorna la View se arriva un intent quando il fragment è visibile all'utente
         getActivity().registerReceiver(new MyLocalReceiver(), new IntentFilter(ApplicationServices.GETCATEGORIES));
     }
 
@@ -66,7 +100,7 @@ public class HomePageFragment extends Fragment {
                 refresh.setRefreshing(true);
             }
         });
-
+        // azione per il pull to refresh
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -77,11 +111,18 @@ public class HomePageFragment extends Fragment {
         });
         refresh.setColorSchemeResources(R.color.primario_2);
 
+        // inserisce la lista di elementi
         drawList(list);
 
         return layout;
     }
 
+    /**
+     * Metodo per disegnare la lista di elementi all'interno della
+     * RecyclerView definita nel layout. Viene eseguito quando il fragment
+     * viene visualizzato, oppure quando occorre aggiornare la lista
+     * @param list elementi racchiusi in una lista
+     */
     public void drawList(ArrayList<Category> list){
 
         RecyclerView rv = (RecyclerView) layout.findViewById(R.id.recyclerview);
@@ -91,6 +132,12 @@ public class HomePageFragment extends Fragment {
 
     }
 
+    /**
+     * Metodo per la richiesta di un servizio. è un wrapper di un normalissima
+     * richiesta asincrona, ma poichè viene utilizzata in diverse parti del fragment
+     * ho ritenuto opportuno isolare il codice in un metodo privato
+     * @param type azione da far eseguire al servizio
+     */
     private void sendIntentToService(String type){
 
         Intent i = new Intent(activity, ApplicationServices.class);
@@ -99,6 +146,10 @@ public class HomePageFragment extends Fragment {
 
     }
 
+    /**
+     * Classe interna che definisce il receiver per gli intent lanciati dal
+     * servizio.
+     */
     public class MyLocalReceiver extends BroadcastReceiver {
 
         @SuppressWarnings("unchecked")
