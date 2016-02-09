@@ -42,6 +42,14 @@ public class ApplicationServices extends IntentService {
 
     public static final String GETCATEGORIES = "it.telecomitalia.my.aiutami.getCategories";
 
+    /** Classe interna per la definizione dei webservices da interrogare. In questo modo è più agevole effettuare
+     * variazioni a seconda dei cambiamenti avvenuti sul webserver. */
+    private class WebServices{
+
+        public static final String CATEGORIES = "categories.xml";
+
+    }
+
     /**
      * Costruttore
      */
@@ -86,7 +94,7 @@ public class ApplicationServices extends IntentService {
     private void getCategories() {
 
         OkHttpClient client  = new OkHttpClient();
-        String url = IntranetServices.getWebservicesURL() + "categories.xml";
+        String url = IntranetServices.getWebservicesURL() + WebServices.CATEGORIES;
         Intent localIntent = new Intent(GETCATEGORIES);
         ArrayList<Category> list = null;
         XMLReader x;
@@ -122,7 +130,7 @@ public class ApplicationServices extends IntentService {
                 }
                 readFile.close();
                 x = new XMLReader();
-                list = (ArrayList<Category>)(Object)x.getObjectsList(x.getXMLData( stringBuilder.toString() ), Category.class);
+                list = (ArrayList<Category>)(Object)x.getObjectsList(x.getXMLData(stringBuilder.toString()), Category.class);
 
             }catch (Exception eFile){
                 eFile.printStackTrace();

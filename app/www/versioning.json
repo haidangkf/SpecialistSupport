@@ -1,16 +1,16 @@
 {
   "current": {
-    "versione": "0.1",
+    "versione": "1.0",
     "build": 1,
     "apk": "it.telecomitalia.my.aiutami.apk",
-    "data": "2016-01-27"
+    "data": "2016-02-02"
   },
 
 
   "v0.1": {
-    "versione": "0.1",
+    "versione": "1.0",
     "build": 1,
     "apk": "it.telecomitalia.my.aiutami.apk",
-    "data": "2016-01-27"
+    "data": "2016-02-02"
   }
 }

@@ -34,6 +34,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,10 +83,30 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
     @Override
     public void onBindViewHolder(CategoriesAdapter.ViewHolder viewHolder, int position) {
 
-        viewHolder.titleText = ( list.get(position) ).getName();
-        viewHolder.color     = Color.parseColor( ( list.get(position) ).getColor());
-        viewHolder.title.setText( viewHolder.titleText );
-        viewHolder.background.setBackgroundColor( viewHolder.color );
+        // salvo negli attributi dell'oggetto i valori da passare con intent
+        // alla activity successiva in caso di click
+        viewHolder.titleText = list.get(position).getName();
+        viewHolder.color     = Color.parseColor( list.get(position).getColor());
+
+        // personalizzo l'elemento con le proprietà dell'oggetto
+        viewHolder.descrizione.setText( list.get(position).getDescrizione() );
+        viewHolder.title.setText(viewHolder.titleText);
+        viewHolder.indicator.setBackgroundColor( viewHolder.color );
+
+        // se ci sono nuove domande, o qualche altro evento, sottolineo con un
+        // banner dello stesso colore della categoria ( vedi layout )
+        if( list.get(position).hasNews() ){
+            viewHolder.banner.setColorFilter(viewHolder.color);
+        }else{
+            viewHolder.banner.setVisibility(View.GONE);
+        }
+
+        // le categorie marchiate come "in evidenza", oltre ad essere in cima alla lista
+        // ( vedi costruttore qui sopra e la classe Category ), voglio abbiano una altezza
+        // non trascurabile in modo siano ben visibili anche con una descrizione misera di una riga.
+        if( list.get(position).isImportant() ){
+            viewHolder.layout.setMinimumHeight(500);
+        }
 
     }
 
@@ -106,15 +127,22 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView title;
-        ImageView background;
+        ImageView banner;
         int color;
         String titleText;
+        View indicator;
+        TextView descrizione;
+        LinearLayout layout;
 
         public ViewHolder( View itemView) {
 
             super(itemView);
-            title      = (TextView) itemView.findViewById(R.id.cat_title);
-            background = (ImageView) itemView.findViewById(R.id.imageView);
+            title       = (TextView) itemView.findViewById(R.id.cat_title);
+            banner      = (ImageView) itemView.findViewById(R.id.banner);
+            indicator   = itemView.findViewById(R.id.indicator);
+            descrizione = (TextView) itemView.findViewById(R.id.descrizione);
+            layout      = (LinearLayout) itemView.findViewById(R.id.linear);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

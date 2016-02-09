@@ -35,6 +35,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
 /**
  * Classe che raccoglie gli elementi comuni di ogni Activity della applicazione, tipicamente il
  * menu della Toolbar, le funzioni per il logout e così via. Ogni nuova Activity deve estendere
@@ -108,5 +113,30 @@ public abstract class ElementsForEveryActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    /**
+     * Metodo comune a tutte le classi dell'applicazione per poter leggere i file messi in cache e
+     * eventualmente utilizzarli al posto della connessione di rete.
+     * @param filename nome del file in cache
+     * @param className tipologia del nodo xml
+     * @return ArrayList di oggetti di tipo className
+     * @throws Exception errori IO o XML
+     */
+    public ArrayList<Object> getStreamFromCachedFile(String filename, Class<?> className) throws Exception{
+
+        String cachedXML;
+        FileInputStream readFile = openFileInput(filename);
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(readFile));
+        StringBuilder stringBuilder = new StringBuilder();
+
+        while ((cachedXML = bufferedReader.readLine()) != null) {
+            stringBuilder.append(cachedXML);
+        }
+        readFile.close();
+
+        XMLReader x = new XMLReader();
+        return x.getObjectsList(x.getXMLData(stringBuilder.toString()), className);
+
     }
 }

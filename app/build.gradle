@@ -25,6 +25,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
+    compile 'com.android.support:cardview-v7:23.1.1'
     compile 'com.unboundid:unboundid-ldapsdk:3.0.0'
     compile 'com.squareup.okhttp:okhttp:2.5.0'
 }

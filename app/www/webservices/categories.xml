@@ -1,0 +1,66 @@
+<categories>
+    <category>
+        <name>Topolino</name>
+        <inevidenza>false</inevidenza>
+        <aggiornamenti>false</aggiornamenti>
+        <descrizione>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</descrizione>
+        <color>#006e78</color>
+        <elements>8</elements>
+    </category>
+    <category>
+        <name>Paperino</name>
+        <inevidenza>false</inevidenza>
+        <aggiornamenti>true</aggiornamenti>
+        <descrizione>Questa è la descrizione di Paperino, papero bello ma piccino.</descrizione>
+        <color>#82c85a</color>
+        <elements>3</elements>
+    </category>
+    <category>
+        <name>Pippo</name>
+        <inevidenza>false</inevidenza>
+        <aggiornamenti>false</aggiornamenti>
+        <descrizione>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</descrizione>
+        <color>#ff825a</color>
+        <elements>1</elements>
+    </category>
+    <category>
+        <name>Minni</name>
+        <inevidenza>false</inevidenza>
+        <aggiornamenti>true</aggiornamenti>
+        <descrizione>Proprio due parole due.</descrizione>
+        <color>#376ea5</color>
+        <elements>5</elements>
+    </category>
+    <category>
+        <name>Gastone</name>
+        <inevidenza>false</inevidenza>
+        <aggiornamenti>false</aggiornamenti>
+        <descrizione>Proprio due parole due.</descrizione>
+        <color>#6e69a0</color>
+        <elements>8</elements>
+    </category>
+    <category>
+        <name>Pico de' Paperis</name>
+        <inevidenza>false</inevidenza>
+        <aggiornamenti>false</aggiornamenti>
+        <descrizione>Proprio due parole due.</descrizione>
+        <color>#CCC000</color>
+        <elements>8</elements>
+    </category>
+    <category>
+        <name>In Evidenza</name>
+        <inevidenza>true</inevidenza>
+        <aggiornamenti>false</aggiornamenti>
+        <descrizione>Le domande/risposte migliori, cambi di processo e le ultime novità da Operation Management</descrizione>
+        <color>#00cccc</color>
+        <elements>8</elements>
+    </category>
+    <category>
+        <name>Gambadilegno</name>
+        <inevidenza>false</inevidenza>
+        <aggiornamenti>false</aggiornamenti>
+        <descrizione>E mettiamoci pure questo e vediamo come viene</descrizione>
+        <color>#c0c0c0</color>
+        <elements>8</elements>
+    </category>
+</categories>

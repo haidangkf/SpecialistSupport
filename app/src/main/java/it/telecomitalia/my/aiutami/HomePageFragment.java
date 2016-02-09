@@ -34,7 +34,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -48,7 +47,7 @@ import java.util.ArrayList;
  */
 public class HomePageFragment extends Fragment {
 
-    AppCompatActivity activity;
+    ElementsForEveryActivity activity;
     View layout;
     SwipeRefreshLayout refresh;
     ArrayList<Category> list;
@@ -60,14 +59,21 @@ public class HomePageFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onCreate(Bundle savedInstanceState){
 
         super.onCreate(savedInstanceState);
-        activity = (AppCompatActivity)getActivity();
+        activity = (ElementsForEveryActivity)getActivity();
 
-        sendIntentToService(ApplicationServices.GETCATEGORIES); // carica categorie da webservice
-
+        // carica categorie da webservice, ma intanto se c'è un file in cache lo
+        // voglio ! In questo modo in mancanza di rete appaiono subito le categorie
+        sendIntentToService(ApplicationServices.GETCATEGORIES);
+        try {
+            list = (ArrayList<Category>)(Object)activity.getStreamFromCachedFile("categories", Category.class);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -100,6 +106,7 @@ public class HomePageFragment extends Fragment {
                 refresh.setRefreshing(true);
             }
         });
+
         // azione per il pull to refresh
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -109,6 +116,7 @@ public class HomePageFragment extends Fragment {
 
             }
         });
+
         refresh.setColorSchemeResources(R.color.primario_2);
 
         // inserisce la lista di elementi
@@ -126,15 +134,16 @@ public class HomePageFragment extends Fragment {
     public void drawList(ArrayList<Category> list){
 
         RecyclerView rv = (RecyclerView) layout.findViewById(R.id.recyclerview);
-
+        // la recyclerview voglio sia un gridlayout a due colonne...
         GridLayoutManager layoutManager = new GridLayoutManager(activity, 2);
+        // ... che varia però ogni tanto, per rompere la monotonia :)
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                return 2 - ( position % 3 >=1 ? 1 : 0 );
+                return 2 - (position % 3 >= 1 ? 1 : 0);
             }
         });
-        rv.setLayoutManager( layoutManager );
+        rv.setLayoutManager(layoutManager);
         rv.setAdapter(new CategoriesAdapter(activity, list));
         refresh.setRefreshing(false);
 

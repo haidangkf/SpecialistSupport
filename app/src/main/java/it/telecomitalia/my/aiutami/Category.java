@@ -39,15 +39,19 @@ public class Category implements Serializable, Comparable<Category> {
 
     private String name;
     private String color;
-    private boolean inEvidenza;
     private String descrizione;
+    private boolean inEvidenza;
+    private boolean aggiornamenti;
+    private int elements;
 
     public Category(Element xml){
 
-        name  = xml.getElementsByTagName("name").item(0).getTextContent();
-        color = xml.getElementsByTagName("color").item(0).getTextContent();
-        inEvidenza = Boolean.parseBoolean(xml.getElementsByTagName("inevidenza").item(0).getTextContent());
-        descrizione = xml.getElementsByTagName("descrizione").item(0).getTextContent();
+        name            = xml.getElementsByTagName("name").item(0).getTextContent();
+        color           = xml.getElementsByTagName("color").item(0).getTextContent();
+        inEvidenza      = Boolean.parseBoolean(xml.getElementsByTagName("inevidenza").item(0).getTextContent());
+        descrizione     = xml.getElementsByTagName("descrizione").item(0).getTextContent();
+        aggiornamenti   = Boolean.parseBoolean(xml.getElementsByTagName("aggiornamenti").item(0).getTextContent());
+        elements        = Integer.parseInt(xml.getElementsByTagName("elements").item(0).getTextContent());
 
     }
 
@@ -74,5 +78,18 @@ public class Category implements Serializable, Comparable<Category> {
 
     public String getDescrizione(){
         return descrizione;
+    }
+
+    public boolean hasNews(){
+        return aggiornamenti;
+    }
+
+    public boolean isImportant(){
+        return inEvidenza;
+    }
+
+    @SuppressWarnings("unused")
+    public int count(){
+        return elements;
     }
 }

@@ -104,7 +104,7 @@ public class IntranetServices extends IntentService {
      * variazioni a seconda dei cambiamenti avvenuti sul webserver. */
     protected class WebServices{
 
-        public static final String PROFILING      = "userProfile.xml";
+        public static final String PROFILING      = "userprofile.xml";
         public static final String UPDATE         = "versioning.json";
 
     }
