@@ -35,7 +35,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -126,7 +126,15 @@ public class HomePageFragment extends Fragment {
     public void drawList(ArrayList<Category> list){
 
         RecyclerView rv = (RecyclerView) layout.findViewById(R.id.recyclerview);
-        rv.setLayoutManager(new LinearLayoutManager(activity));
+
+        GridLayoutManager layoutManager = new GridLayoutManager(activity, 2);
+        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                return 2 - ( position % 3 >=1 ? 1 : 0 );
+            }
+        });
+        rv.setLayoutManager( layoutManager );
         rv.setAdapter(new CategoriesAdapter(activity, list));
         refresh.setRefreshing(false);
 

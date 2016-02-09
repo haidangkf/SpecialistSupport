@@ -26,6 +26,8 @@
  *******************************************************************************/
 package it.telecomitalia.my.aiutami;
 
+import android.support.annotation.NonNull;
+
 import org.w3c.dom.Element;
 import java.io.Serializable;
 
@@ -33,16 +35,33 @@ import java.io.Serializable;
  * Classe che definisce un oggetto che rappresenta una categoria. Implementa Serializable
  * per poter essere trasferita da una activity all'altra con un intent
  */
-public class Category implements Serializable {
+public class Category implements Serializable, Comparable<Category> {
 
     private String name;
     private String color;
+    private boolean inEvidenza;
+    private String descrizione;
 
     public Category(Element xml){
 
         name  = xml.getElementsByTagName("name").item(0).getTextContent();
         color = xml.getElementsByTagName("color").item(0).getTextContent();
+        inEvidenza = Boolean.parseBoolean(xml.getElementsByTagName("inevidenza").item(0).getTextContent());
+        descrizione = xml.getElementsByTagName("descrizione").item(0).getTextContent();
 
+    }
+
+    /**
+     * La classe implementa Comparable per ordinare gli elementi in base al tag XML "inevidenza".
+     * Quelli con tale tag impostato a true, vengono messi in cima alla lista
+     * @param a Oggetto da confrontare
+     * @return int per ordinamento
+     */
+    @Override
+    public int compareTo(@NonNull Category a) {
+        int propertyObjA = a.inEvidenza ? 1 : 0;
+        int propertyObjB = this.inEvidenza ? 1 : 0;
+        return propertyObjA - propertyObjB;
     }
 
     public String getName(){
@@ -51,5 +70,9 @@ public class Category implements Serializable {
 
     public String getColor(){
         return color;
+    }
+
+    public String getDescrizione(){
+        return descrizione;
     }
 }

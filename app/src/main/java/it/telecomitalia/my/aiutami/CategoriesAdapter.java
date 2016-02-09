@@ -36,6 +36,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Classe per definire come viene visualizzata la lista delle categorie
@@ -52,7 +53,8 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
      */
     public CategoriesAdapter(Activity activity, ArrayList<Category> list){
 
-        this.list    = list;
+        if(list!=null) Collections.sort(list);
+        this.list     = list;
         this.activity = activity;
 
     }
