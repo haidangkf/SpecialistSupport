@@ -28,6 +28,10 @@ package it.telecomitalia.my.aiutami;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +40,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Controller per QuestionsListActivity
@@ -48,6 +53,7 @@ public class QuestionsListAdapter extends RecyclerView.Adapter<QuestionsListAdap
 
     public QuestionsListAdapter(Activity activity, int color, ArrayList<Question> list){
 
+        if(list!=null) Collections.sort(list);
         this.list     = list;
         this.activity = activity;
         this.color    = color;
@@ -70,10 +76,27 @@ public class QuestionsListAdapter extends RecyclerView.Adapter<QuestionsListAdap
         viewHolder.voti.setText( String.valueOf( list.get(position).getVoti() ) );
         String sinossi = list.get(position).getData() + " - " + list.get(position).getSinossi();
         viewHolder.sinossi.setText( sinossi );
+
         ArrayList<Category> categories = list.get(position).getCategories();
         for( Category c : categories){
-            TextView t = new TextView(activity, null, R.style.chipText);
+            // per ogni elemento, crea textview con style associato chipText
+            TextView t = new TextView(activity, null, R.attr.myChipStyle);
             t.setText(c.getName());
+            // prendo il drawable
+            Drawable ball = ContextCompat.getDrawable(activity.getBaseContext(), R.drawable.ball);
+            // gli cambio colore in base al colore della categoria ( wrap serve su kitkat, su altri basta il drawable )
+            DrawableCompat.setTint(ball.mutate(), Color.parseColor(c.getColor()));
+            DrawableCompat.setTint( DrawableCompat.wrap(ball), Color.parseColor(c.getColor()) );
+            // e lo piazzo alla sinistra del testo
+            t.setCompoundDrawablesRelativeWithIntrinsicBounds(ball, null, null, null);
+            // metto i margini. non è possibile inserirli in uno stile.
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            param.setMargins(0, 0, 10, 0); // left, top, right, bottom
+            t.setLayoutParams(param);
+            // ed infine aggiungo la view
+            // todo migliorabile. 1- ordine delle categorie, 2- layout multilinea
             viewHolder.categories.addView(t);
         }
 

@@ -1,5 +1,7 @@
 package it.telecomitalia.my.aiutami;
 
+import android.support.annotation.NonNull;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import java.util.ArrayList;
@@ -8,7 +10,7 @@ import java.util.ArrayList;
  * Classe che definisce un oggetto che rappresenta una domanda all'interno della lista
  * visualizzata per una determinata categoria.
  */
-public class Question {
+public class Question implements Comparable<Question>{
 
     private String domanda;
     private int voti;
@@ -24,6 +26,17 @@ public class Question {
         sinossi     = xml.getElementsByTagName("sinossi").item(0).getTextContent();
         catNodes    = xml.getElementsByTagName("categories").item(0).getChildNodes();
 
+    }
+
+    /**
+     * La classe implementa Comparable per ordinare gli elementi in base al tag XML "voti".
+     * In questo modo, le risposte con più ritorni positivi, vengono messe in cima alla lista
+     * @param a Oggetto da confrontare
+     * @return int per ordinamento
+     */
+    @Override
+    public int compareTo(@NonNull Question a) {
+        return a.voti - this.voti;
     }
 
     public String getDomanda(){
@@ -43,18 +56,12 @@ public class Question {
         return sinossi;
     }
 
-    @SuppressWarnings("unchecked")
     public ArrayList<Category> getCategories(){
-        //The code splits the string on a delimiter defined as: zero or more whitespace, a literal comma, zero or more
-        // whitespace which will place the words into the list and collapse any whitespace between the words and commas.
-        //return Arrays.asList(strCat.split("\\s*,\\s*"));
+
         ArrayList<Category> list = new ArrayList<>();
-
-            for (int i = 0; i < catNodes.getLength(); i++) {
-                list.add( new Category( (Element)catNodes.item(i) ));
-            }
-
-
+        for (int i = 0; i < catNodes.getLength(); i++) {
+            list.add( new Category( (Element)catNodes.item(i) ));
+        }
         return list;
 
     }

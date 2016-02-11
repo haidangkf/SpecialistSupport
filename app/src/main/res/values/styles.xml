@@ -16,6 +16,10 @@
         <!-- l'action mode (seleziona, copia e incolla...) sovrascrive la toolbar -->
         <item name="windowActionModeOverlay">true</item>
         <item name="actionModeBackground">@color/primario_1</item>
+
+        <!-- https://gist.github.com/romannurik/7026222 styling via java -->
+        <item name="myChipStyle">@style/chipText</item>
+
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
@@ -51,5 +55,8 @@
         <item name="android:drawableStart">@drawable/ball</item>
         <item name="android:textSize">12sp</item>
         <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/grey_alfa</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
     </style>
 </resources>

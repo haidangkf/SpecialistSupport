@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- https://gist.github.com/romannurik/7026222 styling via java -->
+    <declare-styleable name="AppTheme">
+        <attr name="myChipStyle" format="reference" />
+    </declare-styleable>
+</resources>

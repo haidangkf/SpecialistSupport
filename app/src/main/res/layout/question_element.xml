@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:drawableBottom="@drawable/ic_voto"
                 android:textSize="14sp"
-                android:text="9"
+                tools:text="9"
                 android:gravity="center_horizontal"/>
 
         </LinearLayout>
@@ -42,7 +42,7 @@
             android:paddingBottom="16dp"
             android:paddingStart="8dp"
             android:paddingEnd="16dp"
-            android:text="Come posso porre una domanda all&apos;interno della applicazione ?"
+            tools:text="Come posso porre una domanda all&apos;interno della applicazione ?"
             android:ellipsize="end"
             android:maxLines="2"
             android:textColor="@android:color/black"
@@ -53,7 +53,7 @@
             android:id="@+id/risposta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="11 febbraio 2015 - Questa è la risposta o una sua sinossi in qualche riga. pensare a far inserire un riassunto in fase di compilazione"
+            tools:text="11 febbraio 2015 - Questa è la risposta o una sua sinossi in qualche riga. pensare a far inserire un riassunto in fase di compilazione"
             android:paddingStart="8dp"
             android:paddingEnd="16dp"
             android:textSize="14sp"
@@ -76,7 +76,7 @@
             android:layout_below="@+id/risposta"
             android:layout_toEndOf="@+id/info">
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -88,7 +88,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Categoria"
-                android:theme="@style/chipText"/>
+                android:theme="@style/chipText"/>-->
+
 
         </LinearLayout>
 
