@@ -131,7 +131,7 @@ public class HomePageFragment extends Fragment {
      * viene visualizzato, oppure quando occorre aggiornare la lista
      * @param list elementi racchiusi in una lista
      */
-    public void drawList(ArrayList<Category> list){
+    public void drawList(final ArrayList<Category> list){
 
         RecyclerView rv = (RecyclerView) layout.findViewById(R.id.recyclerview);
         // la recyclerview voglio sia un gridlayout a due colonne...
@@ -140,7 +140,12 @@ public class HomePageFragment extends Fragment {
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                return 2 - (position % 3 >= 1 ? 1 : 0);
+                if( position == list.size()-1 & (position-1) % 3 == 0 ){
+                    // se ultimo elemento occupa la colonna di sx singolarmente,
+                    // ovvero posizioni 1,4,7,10,13, ... (position-1) % 3 == 0
+                    return 2;
+                }else
+                    return 2 - (position % 3 >= 1 ? 1 : 0);
             }
         });
         rv.setLayoutManager(layoutManager);

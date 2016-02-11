@@ -1,47 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="96dp"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="1dp">
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="24dp"
-        android:text="2 febbraio 2016"
-        android:id="@+id/data"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:background="@color/grey_white"
-        android:gravity="center_vertical"/>
 
-    <ImageView
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:id="@+id/image"
-        android:src="@drawable/questions_list_default_48dp"
-        android:tint="@color/grey_white"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/info"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:gravity="center_horizontal"
+            android:paddingTop="16dp"
+            android:paddingStart="4dp">
 
-    <ImageView
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:id="@+id/imageView4"
-        android:src="@drawable/ic_menu_favorite"
-        android:layout_alignTop="@+id/data"
-        android:layout_alignParentEnd="true"/>
+            <TextView
+                android:id="@+id/nVoti"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableBottom="@drawable/ic_voto"
+                android:textSize="14sp"
+                android:text="9"
+                android:gravity="center_horizontal"/>
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:text="Come posso porre una domanda intelligente, scritta bene, e magari grammaticalmente corretta all'interno di Aiutami ?"
-        android:id="@+id/domanda"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/image"
-        android:layout_marginBottom="24dp"
-        android:ellipsize="end"
-        android:maxLines="3"
-        android:textSize="20dp"/>
-</RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/domanda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="16dp"
+            android:text="Come posso porre una domanda all&apos;interno della applicazione ?"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@android:color/black"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/info"/>
+
+        <TextView
+            android:id="@+id/risposta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="11 febbraio 2015 - Questa è la risposta o una sua sinossi in qualche riga. pensare a far inserire un riassunto in fase di compilazione"
+            android:paddingStart="8dp"
+            android:paddingEnd="16dp"
+            android:textSize="14sp"
+            android:textColor="@color/grey_alfa"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:minLines="2"
+            android:layout_below="@id/domanda"
+            android:layout_toEndOf="@+id/info"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingEnd="16dp"
+            android:paddingStart="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:layout_below="@+id/risposta"
+            android:layout_toEndOf="@+id/info">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Categoria"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:paddingStart="0dp"
+                android:paddingEnd="5dp"
+                android:background="@drawable/chip"
+                android:drawableStart="@drawable/ball"
+                android:textSize="12sp"
+                android:gravity="center_vertical"
+                android:layout_marginEnd="8dp"/>
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Categoria"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:paddingStart="0dp"
+                android:paddingEnd="5dp"
+                android:background="@drawable/chip"
+                android:drawableStart="@drawable/ball"
+                android:textSize="12sp"
+                android:gravity="center_vertical"
+                android:layout_marginEnd="8dp"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+
+
+
+</android.support.v7.widget.CardView>
