@@ -41,4 +41,15 @@
         <item name="android:paddingTop">20dp</item>
         <item name="android:paddingBottom">20dp</item>
     </style>
+
+    <style name="chipText" parent="AppTheme">
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingEnd">5dp</item>
+        <item name="android:background">@drawable/chip</item>
+        <item name="android:drawableStart">@drawable/ball</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
 </resources>

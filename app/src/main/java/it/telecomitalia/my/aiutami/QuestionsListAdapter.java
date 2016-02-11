@@ -32,18 +32,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 /**
  * Controller per QuestionsListActivity
  */
 public class QuestionsListAdapter extends RecyclerView.Adapter<QuestionsListAdapter.ViewHolder> {
 
+    private ArrayList<Question> list;
     private Activity activity;
     private int color;
 
-    public QuestionsListAdapter(Activity activity, int color){
+    public QuestionsListAdapter(Activity activity, int color, ArrayList<Question> list){
 
+        this.list     = list;
         this.activity = activity;
         this.color    = color;
 
@@ -61,25 +66,41 @@ public class QuestionsListAdapter extends RecyclerView.Adapter<QuestionsListAdap
     @Override
     public void onBindViewHolder(QuestionsListAdapter.ViewHolder viewHolder, int position) {
 
-        //viewHolder.imageView.settint
+        viewHolder.domanda.setText( list.get(position).getDomanda() );
+        viewHolder.voti.setText( String.valueOf( list.get(position).getVoti() ) );
+        String sinossi = list.get(position).getData() + " - " + list.get(position).getSinossi();
+        viewHolder.sinossi.setText( sinossi );
+        ArrayList<Category> categories = list.get(position).getCategories();
+        for( Category c : categories){
+            TextView t = new TextView(activity, null, R.style.chipText);
+            t.setText(c.getName());
+            viewHolder.categories.addView(t);
+        }
 
     }
 
     @Override
     public int getItemCount() {
 
-        return 40;
+        return list.size();
 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView imageView;
+        TextView domanda;
+        TextView voti;
+        TextView sinossi;
+        LinearLayout categories;
 
         public ViewHolder( View itemView) {
 
             super(itemView);
-            imageView = (ImageView)itemView.findViewById(R.id.image);
+            domanda     = (TextView)itemView.findViewById(R.id.domanda);
+            sinossi     = (TextView)itemView.findViewById(R.id.risposta);
+            voti        = (TextView)itemView.findViewById(R.id.n_voti);
+            categories  = (LinearLayout)itemView.findViewById(R.id.categories);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

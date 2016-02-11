@@ -48,10 +48,17 @@ public class Category implements Serializable, Comparable<Category> {
 
         name            = xml.getElementsByTagName("name").item(0).getTextContent();
         color           = xml.getElementsByTagName("color").item(0).getTextContent();
-        inEvidenza      = Boolean.parseBoolean(xml.getElementsByTagName("inevidenza").item(0).getTextContent());
-        descrizione     = xml.getElementsByTagName("descrizione").item(0).getTextContent();
-        aggiornamenti   = Boolean.parseBoolean(xml.getElementsByTagName("aggiornamenti").item(0).getTextContent());
-        elements        = Integer.parseInt(xml.getElementsByTagName("elements").item(0).getTextContent());
+        // se non sono definiti gli altri tag, li ignoro
+        // avrei potuto fare overload del costruttore ma ho la classe
+        // XMLReader vuole un solo costruttore.
+        if( xml.getElementsByTagName("inevidenza").item(0)!=null )
+            inEvidenza      = Boolean.parseBoolean(xml.getElementsByTagName("inevidenza").item(0).getTextContent());
+        if( xml.getElementsByTagName("descrizione").item(0)!=null )
+            descrizione     = xml.getElementsByTagName("descrizione").item(0).getTextContent();
+        if( xml.getElementsByTagName("aggiornamenti").item(0)!=null )
+            aggiornamenti = Boolean.parseBoolean(xml.getElementsByTagName("aggiornamenti").item(0).getTextContent());
+        if( xml.getElementsByTagName("elements").item(0)!=null )
+            elements = Integer.parseInt(xml.getElementsByTagName("elements").item(0).getTextContent());
 
     }
 
