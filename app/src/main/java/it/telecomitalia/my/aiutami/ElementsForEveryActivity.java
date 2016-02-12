@@ -26,6 +26,7 @@
  *******************************************************************************/
 package it.telecomitalia.my.aiutami;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
@@ -137,6 +138,21 @@ public abstract class ElementsForEveryActivity extends AppCompatActivity {
 
         XMLReader x = new XMLReader();
         return x.getObjectsList(x.getXMLData(stringBuilder.toString()), className);
+
+    }
+
+    /**
+     * Metodo per la richiesta di un servizio. è un wrapper di un normalissima
+     * richiesta asincrona, ma poichè viene utilizzata in diverse parti del fragment
+     * ho ritenuto opportuno isolare il codice in un metodo privato
+     * @param activity context di partenza
+     * @param type azione da far eseguire al servizio
+     */
+    public void sendIntentToService(Activity activity, String type){
+
+        Intent i = new Intent(activity, ApplicationServices.class);
+        i.putExtra("application", type);
+        activity.startService(i);
 
     }
 }

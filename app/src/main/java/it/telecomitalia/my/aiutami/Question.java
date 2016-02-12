@@ -4,19 +4,22 @@ import android.support.annotation.NonNull;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import java.io.Serializable;
 import java.util.ArrayList;
+
 
 /**
  * Classe che definisce un oggetto che rappresenta una domanda all'interno della lista
- * visualizzata per una determinata categoria.
+ * visualizzata per una determinata categoria. Implementa Serializable
+ * per poter essere trasferita da una activity all'altra con un intent
  */
-public class Question implements Comparable<Question>{
+public class Question implements Serializable, Comparable<Question>{
 
     private String domanda;
     private int voti;
     private String data;
     private String sinossi;
-    private NodeList catNodes;
+    ArrayList<Category> list; // NON usare NodeList, non è Serializable
 
     public Question(Element xml){
 
@@ -24,7 +27,14 @@ public class Question implements Comparable<Question>{
         voti        = Integer.parseInt(xml.getElementsByTagName("voti").item(0).getTextContent());
         data        = xml.getElementsByTagName("data").item(0).getTextContent();
         sinossi     = xml.getElementsByTagName("sinossi").item(0).getTextContent();
-        catNodes    = xml.getElementsByTagName("categories").item(0).getChildNodes();
+
+        // non potendo usare NodeList come attributo, costruisco direttamente qui
+        // l'array con le categorie.
+        NodeList tmp = xml.getElementsByTagName("categories").item(0).getChildNodes();
+        list = new ArrayList<>();
+        for (int i = 0; i < tmp.getLength(); i++) {
+            list.add(new Category((Element) tmp.item(i)));
+        }
 
     }
 
@@ -58,10 +68,6 @@ public class Question implements Comparable<Question>{
 
     public ArrayList<Category> getCategories(){
 
-        ArrayList<Category> list = new ArrayList<>();
-        for (int i = 0; i < catNodes.getLength(); i++) {
-            list.add( new Category( (Element)catNodes.item(i) ));
-        }
         return list;
 
     }

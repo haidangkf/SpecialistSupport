@@ -41,12 +41,14 @@ import java.util.ArrayList;
 public class ApplicationServices extends IntentService {
 
     public static final String GETCATEGORIES = "it.telecomitalia.my.aiutami.getCategories";
+    public static final String GETQUESTIONS  = "it.telecomitalia.my.aiutami.getQuestions";
 
     /** Classe interna per la definizione dei webservices da interrogare. In questo modo è più agevole effettuare
      * variazioni a seconda dei cambiamenti avvenuti sul webserver. */
     private class WebServices{
 
         public static final String CATEGORIES = "categories.xml";
+        public static final String QUESTIONS  = "questions.xml";
 
     }
 
@@ -68,6 +70,7 @@ public class ApplicationServices extends IntentService {
         switch (service) {
 
             case GETCATEGORIES : this.getCategories(); break;
+            case GETQUESTIONS : this.getQuestions(""); break;
             default:
                 applicationNull(service);
 
@@ -86,17 +89,20 @@ public class ApplicationServices extends IntentService {
     }
 
     /**
-     * Metodo per collegarsi ad un webservice e scaricare la lista delle categorie. Tale lista
-     * viene trasformata in un ArrayList di oggetti che rappresentano ogni entry e viene
-     * passata con un intent a chi ha richiesto l'operazione
+     * Metodo per collegarsi ad un webservice e scaricare dati XML. L'esito
+     * viene trasformato in un ArrayList di oggetti e passato con un intent
+     * a chi ha richiesto l'operazione
+     * @param page parte finale della URL da interrogare
+     * @param intentName nome dell'intent che viene passato
+     * @param fileName identificativo per dati extra dell'intent in cui risiede la lista
+     * @param classType tipologia degli oggetti contenuti nella lista
      */
-    @SuppressWarnings("unchecked")
-    private void getCategories() {
+    private void getDataFromWebService(String page, String intentName, String fileName, Class<?> classType){
 
         OkHttpClient client  = new OkHttpClient();
-        String url = IntranetServices.getWebservicesURL() + WebServices.CATEGORIES;
-        Intent localIntent = new Intent(GETCATEGORIES);
-        ArrayList<Category> list = null;
+        String url = IntranetServices.getWebservicesURL() + page;
+        Intent localIntent = new Intent(intentName);
+        ArrayList<?> list = null;
         XMLReader x;
         try {
             // prendo i dati dal webserver
@@ -106,12 +112,12 @@ public class ApplicationServices extends IntentService {
             response = response.replace("\r\n","").replace("    ","");
             // tutto è andato bene, provo a fare il parse XML direttamente dello stream
             x = new XMLReader();
-            list = (ArrayList<Category>)(Object)x.getObjectsList(x.getXMLData(response), Category.class);
+            list = x.getObjectsList(x.getXMLData(response), classType);
             // andata anche con XML, si mette a disposizione la lista
-            localIntent.putExtra("categories", list);
+            localIntent.putExtra(fileName, list);
             // caching. ci arrivo solo se tutto è andato bene, altrimenti
             // è stata già sollevata un'eccezione ed il file non viene quindi toccato
-            FileOutputStream outputStream = openFileOutput("categories", Context.MODE_PRIVATE);
+            FileOutputStream outputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
             outputStream.write(response.getBytes());
             outputStream.close();
 
@@ -122,7 +128,7 @@ public class ApplicationServices extends IntentService {
             // della cache, invece che la schermata bianca di assenza connessione.
             String cachedXML;
             try {
-                FileInputStream readFile = openFileInput("categories");
+                FileInputStream readFile = openFileInput(fileName);
                 BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(readFile) );
                 StringBuilder stringBuilder = new StringBuilder();
                 while ( (cachedXML = bufferedReader.readLine()) != null ) {
@@ -130,20 +136,45 @@ public class ApplicationServices extends IntentService {
                 }
                 readFile.close();
                 x = new XMLReader();
-                list = (ArrayList<Category>)(Object)x.getObjectsList(x.getXMLData(stringBuilder.toString()), Category.class);
+                list = x.getObjectsList(x.getXMLData(stringBuilder.toString()), classType);
 
             }catch (Exception eFile){
                 eFile.printStackTrace();
-                localIntent.putExtra("categories", list);
+                localIntent.putExtra(fileName, list);
             }
             // ho preso la cache, se esiste, e list è null oppure quello che ho letto dal file
             // salvato in precedentza
             localIntent.putExtra("isCached", true );
-            localIntent.putExtra("categories", list);
+            localIntent.putExtra(fileName, list);
 
         } finally {
             sendBroadcast(localIntent);
         }
+
+    }
+
+    /**
+     * Metodo per collegarsi ad un webservice e scaricare la lista delle categorie. Tale lista
+     * viene trasformata in un ArrayList di oggetti che rappresentano ogni entry e viene
+     * passata con un intent a chi ha richiesto l'operazione
+     */
+    @SuppressWarnings("unchecked")
+    private void getCategories() {
+
+        getDataFromWebService(WebServices.CATEGORIES, GETCATEGORIES, "categories", Category.class);
+
+    }
+
+    /**
+     * Metodo per collegarsi ad un webservice e scaricare la lista delle domande appartenenti ad
+     * una categoria . Tale lista viene trasformata in un ArrayList di oggetti che rappresentano
+     * ogni entry e viene passata con un intent a chi ha richiesto l'operazione
+     * @param type filtro su categoria da interrogare
+     */
+    private void getQuestions(String type){
+
+        String url = WebServices.QUESTIONS+type;
+        getDataFromWebService(WebServices.QUESTIONS, GETQUESTIONS, "questions", Question.class);
 
     }
 }

@@ -26,8 +26,14 @@
  *******************************************************************************/
 package it.telecomitalia.my.aiutami;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -42,19 +48,24 @@ import java.util.ArrayList;
 public class QuestionsListActivity extends ElementsForEveryActivity {
 
     int color;
+    ArrayList<Question> list;
+    SwipeRefreshLayout refresh;
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.question_list);
 
+        // Toolbar e navigazione
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         CollapsingToolbarLayout ctl = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
         setSupportActionBar(toolbar);
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // personalizzazioni toolbar, titolo e colori
         String title = getIntent().getStringExtra("title");
         color    = getIntent().getIntExtra("color", R.color.primario_1);
         getSupportActionBar().setTitle(title);
@@ -62,59 +73,96 @@ public class QuestionsListActivity extends ElementsForEveryActivity {
         ctl.setBackgroundColor(color);
         ctl.setContentScrimColor(color);
         ctl.setStatusBarScrimColor(color);
+
+        // inserimento fab
         this.insertDefaultFab();
 
-        creaLista();
-    }
-
-    public void creaLista(){
-
-        String test = "<questions>" +
-                "<question>" +
-                "<domanda>Come posso porre una domanda all'interno della applicazione ?</domanda>" +
-                "<voti>5</voti>" +
-                "<data>11 febbraio 2015</data>" +
-                "<sinossi>Questa è la risposta o una sua sinossi in qualche riga. pensare a far inserire un riassunto in fase di compilazione</sinossi>" +
-                "<categories>" +
-                "<category>" +
-                "<name>Topolino</name>" +
-                "<color>#006e78</color>" +
-                "</category>" +
-                "<category>" +
-                "<name>Paperino</name>" +
-                "<color>#82c85a</color>" +
-                "</category>" +
-                "<category>" +
-                "<name>Pico de' Paperis</name>" +
-                "<color>#CCC000</color>" +
-                "</category>" +
-                "</categories>" +
-                "</question>" +
-                "<question>" +
-                "<domanda>Come posso porre una domanda all'interno della applicazione ?</domanda>" +
-                "<voti>17</voti>" +
-                "<data>2 febbraio 2015</data>" +
-                "<sinossi>Questa è la risposta o una sua sinossi in qualche riga. pensare a far inserire un riassunto in fase di compilazione</sinossi>" +
-                "<categories>" +
-                "<category>" +
-                "<name>Minni</name>" +
-                "<color>#376ea5</color>" +
-                "</category>" +
-                "</categories>" +
-                "</question>" +
-                "</questions>";
-        ArrayList<Question> list = null;
+        // carica dati da webservice, ma intanto se c'è un file in cache lo
+        // voglio ! In questo modo in mancanza di rete appaiono subito i dati
+        sendIntentToService(this, ApplicationServices.GETQUESTIONS);
         try {
-            XMLReader x = new XMLReader();
-            list = (ArrayList<Question>) (Object) x.getObjectsList(x.getXMLData(test), Question.class);
-        }catch (XMLReader.GodzillioniDiXMLExceptions e){
+            list = (ArrayList<Question>)(Object)getStreamFromCachedFile("questions", Question.class);
+        }catch (Exception e){
             e.printStackTrace();
         }
+
+        // appena creata la view, intanto che carico i dati, mostro il refresh
+        refresh = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        refresh.post(new Runnable() {
+            @Override
+            public void run() {
+                refresh.setRefreshing(true);
+            }
+        });
+
+        // azione per il pull to refresh
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                sendIntentToService(QuestionsListActivity.this, ApplicationServices.GETQUESTIONS);
+
+            }
+        });
+
+        refresh.setColorSchemeResources(R.color.primario_2);
+
+        // inserisce la lista di elementi
+        drawList(list);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // aggiorna la View se arriva un intent quando il fragment è visibile all'utente
+        registerReceiver(new QuestionsReceiver(), new IntentFilter(ApplicationServices.GETQUESTIONS));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            unregisterReceiver(new QuestionsReceiver());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Metodo per disegnare la lista di elementi all'interno della
+     * RecyclerView definita nel layout. Viene eseguito quando activity
+     * viene visualizzato, oppure quando occorre aggiornare la lista
+     * @param list elementi racchiusi in una lista
+     */
+    public void drawList(final ArrayList<Question> list){
+
         RecyclerView rv = (RecyclerView) findViewById(R.id.recyclerview);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter( new QuestionsListAdapter(this, color, list) );
-
-
+        refresh.setRefreshing(false);
     }
 
+    /**
+     * Classe interna che definisce il receiver per gli intent lanciati dal
+     * servizio.
+     */
+    public class QuestionsReceiver extends BroadcastReceiver {
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            list = (ArrayList<Question>)intent.getSerializableExtra("questions");
+            drawList(list);
+            // disegno la lista in ogni caso. se è null e non esiste salvataggio
+            // apparirà scermata bianca, altrimenti la lista. Avviso che qualcosa
+            // non è andato bene.
+            if( intent.getBooleanExtra("isCached", false) || list==null ){
+                // se i dati arrivano dalla cache oppure list è ancora null...
+                Snackbar.make(refresh, getResources().getString(R.string.error_refresh), Snackbar.LENGTH_LONG).show();
+            }
+
+        }
+
+    }
 }

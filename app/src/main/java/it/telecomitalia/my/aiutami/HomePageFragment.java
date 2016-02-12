@@ -51,6 +51,7 @@ public class HomePageFragment extends Fragment {
     View layout;
     SwipeRefreshLayout refresh;
     ArrayList<Category> list;
+    CategoriesReceiver myreceiver;
 
     /**
      * Costruttore di default
@@ -65,10 +66,10 @@ public class HomePageFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
         activity = (ElementsForEveryActivity)getActivity();
-
+        myreceiver = new CategoriesReceiver();
         // carica categorie da webservice, ma intanto se c'è un file in cache lo
         // voglio ! In questo modo in mancanza di rete appaiono subito le categorie
-        sendIntentToService(ApplicationServices.GETCATEGORIES);
+        activity.sendIntentToService(activity, ApplicationServices.GETCATEGORIES);
         try {
             list = (ArrayList<Category>)(Object)activity.getStreamFromCachedFile("categories", Category.class);
         }catch (Exception e){
@@ -80,14 +81,14 @@ public class HomePageFragment extends Fragment {
     public void onResume() {
         super.onResume();
         // aggiorna la View se arriva un intent quando il fragment è visibile all'utente
-        getActivity().registerReceiver(new MyLocalReceiver(), new IntentFilter(ApplicationServices.GETCATEGORIES));
+        activity.registerReceiver( myreceiver, new IntentFilter(ApplicationServices.GETCATEGORIES));
     }
 
     @Override
     public void onPause() {
         super.onPause();
         try {
-            getActivity().unregisterReceiver(new MyLocalReceiver());
+            activity.unregisterReceiver( myreceiver );
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -112,7 +113,7 @@ public class HomePageFragment extends Fragment {
             @Override
             public void onRefresh() {
 
-                sendIntentToService(ApplicationServices.GETCATEGORIES);
+                activity.sendIntentToService(activity, ApplicationServices.GETCATEGORIES);
 
             }
         });
@@ -154,25 +155,13 @@ public class HomePageFragment extends Fragment {
 
     }
 
-    /**
-     * Metodo per la richiesta di un servizio. è un wrapper di un normalissima
-     * richiesta asincrona, ma poichè viene utilizzata in diverse parti del fragment
-     * ho ritenuto opportuno isolare il codice in un metodo privato
-     * @param type azione da far eseguire al servizio
-     */
-    private void sendIntentToService(String type){
 
-        Intent i = new Intent(activity, ApplicationServices.class);
-        i.putExtra("application", type);
-        activity.startService(i);
-
-    }
 
     /**
      * Classe interna che definisce il receiver per gli intent lanciati dal
      * servizio.
      */
-    public class MyLocalReceiver extends BroadcastReceiver {
+    public class CategoriesReceiver extends BroadcastReceiver {
 
         @SuppressWarnings("unchecked")
         @Override
