@@ -33,6 +33,8 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,11 +74,42 @@ public class QuestionsListAdapter extends RecyclerView.Adapter<QuestionsListAdap
     @Override
     public void onBindViewHolder(QuestionsListAdapter.ViewHolder viewHolder, int position) {
 
+        // titolo della domanda. e fin qui niente si strano :D
         viewHolder.domanda.setText( list.get(position).getDomanda() );
-        viewHolder.voti.setText( String.valueOf( list.get(position).getVoti() ) );
-        String sinossi = list.get(position).getData() + " - " + list.get(position).getSinossi();
-        viewHolder.sinossi.setText( sinossi );
 
+        // Sinossi della risposta, se presente. Altrimenti visualizzo solo data in cui è stata
+        // posta la domanda e una evidenza del fatto che tale risposta manca.
+        // Ricordati che tale data viene da XML ed è quella più recente del processo
+        // ( domanda, o data della risposta, o data di una modifica ) e che anche la sinossi è
+        // generata a partire dalla risposta inserita.
+        boolean hasAnswer = !list.get(position).getSinossi().equals("");
+        String sinossi = hasAnswer ?
+                                list.get(position).getData() + " - " + list.get(position).getSinossi():
+                                list.get(position).getData() + " - In attesa di risposta." ;
+        SpannableString sColored = new SpannableString( sinossi );
+        if( !hasAnswer ){
+            sColored.setSpan( new ForegroundColorSpan( ContextCompat.getColor(activity, R.color.primario_2) ),
+                    sinossi.indexOf("-")+1,
+                    sinossi.length(), 0
+            );
+        }
+        viewHolder.sinossi.setText( sColored );
+
+        // Numero delle valutazioni alla risposta e immagine identificativa:
+        // 0 - se c'è una risposta, ma non un voto
+        // 1 - se manca la risposta ( quindi non è possibile votare )
+        // 2 - ci sono voti e risposta, si spera il caso preponderante.
+        Drawable star = ContextCompat.getDrawable(activity.getBaseContext(), R.drawable.ic_voto);
+        if( list.get(position).getVoti()==0 ){
+            // nei primi due casi evidenzio la cosa. mutate() importante, altrimenti cambiano TUTTE
+            DrawableCompat.setTint( DrawableCompat.wrap(star).mutate(), ContextCompat.getColor(activity, R.color.grey_white) );
+        }
+        viewHolder.voti.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, null, star);
+        viewHolder.voti.setText( String.valueOf( list.get(position).getVoti() ) );
+        // categorie a cui appartiene la coppia domanda/risposta. una categoria esiste di sicuro
+        // ed è quella inserita da utente alla creazione della domanda. Altre, possono essere state
+        // inserite in fase di editing o di risposta. Le categorie sono presentate in label con il
+        // colore che le identifica
         ArrayList<Category> categories = list.get(position).getCategories();
         for( Category c : categories){
             // per ogni elemento, crea textview con style associato chipText
@@ -85,8 +118,8 @@ public class QuestionsListAdapter extends RecyclerView.Adapter<QuestionsListAdap
             // prendo il drawable
             Drawable ball = ContextCompat.getDrawable(activity.getBaseContext(), R.drawable.ball);
             // gli cambio colore in base al colore della categoria ( wrap serve su kitkat, su altri basta il drawable )
-            DrawableCompat.setTint(ball.mutate(), Color.parseColor(c.getColor()));
-            DrawableCompat.setTint( DrawableCompat.wrap(ball), Color.parseColor(c.getColor()) );
+            //DrawableCompat.setTint(ball.mutate(), Color.parseColor(c.getColor()));
+            DrawableCompat.setTint( DrawableCompat.wrap(ball).mutate(), Color.parseColor(c.getColor()) );
             // e lo piazzo alla sinistra del testo
             t.setCompoundDrawablesRelativeWithIntrinsicBounds(ball, null, null, null);
             // metto i margini. non è possibile inserirli in uno stile.
