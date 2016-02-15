@@ -40,15 +40,17 @@ import java.util.ArrayList;
 
 public class ApplicationServices extends IntentService {
 
-    public static final String GETCATEGORIES = "it.telecomitalia.my.aiutami.getCategories";
-    public static final String GETQUESTIONS  = "it.telecomitalia.my.aiutami.getQuestions";
+    public static final String GETCATEGORIES  = "it.telecomitalia.my.aiutami.getCategories";
+    public static final String GETQUESTIONS   = "it.telecomitalia.my.aiutami.getQuestions";
+    public static final String GETFAVOURITES  = "it.telecomitalia.my.aiutami.getFavourites";
 
     /** Classe interna per la definizione dei webservices da interrogare. In questo modo è più agevole effettuare
      * variazioni a seconda dei cambiamenti avvenuti sul webserver. */
     private class WebServices{
 
-        public static final String CATEGORIES = "categories.xml";
-        public static final String QUESTIONS  = "questions.xml";
+        public static final String CATEGORIES  = "categories.xml";
+        public static final String QUESTIONS   = "questions.xml";
+        public static final String FAVOURITES  = "questions.xml";
 
     }
 
@@ -71,6 +73,7 @@ public class ApplicationServices extends IntentService {
 
             case GETCATEGORIES : this.getCategories(); break;
             case GETQUESTIONS : this.getQuestions(""); break;
+            case GETFAVOURITES : this.getFavourites(); break;
             default:
                 applicationNull(service);
 
@@ -175,6 +178,12 @@ public class ApplicationServices extends IntentService {
 
         String url = WebServices.QUESTIONS+type;
         getDataFromWebService(WebServices.QUESTIONS, GETQUESTIONS, "questions", Question.class);
+
+    }
+
+    public void getFavourites(){
+
+        getDataFromWebService(WebServices.FAVOURITES, GETFAVOURITES, "favourites", Question.class);
 
     }
 }

@@ -62,6 +62,19 @@ public class QuestionsListAdapter extends RecyclerView.Adapter<QuestionsListAdap
 
     }
 
+    /**
+     * Costruttore che utilizza il colore principale dell'applicazione per disegnare
+     * la toolbar. Utilizza il costruttore principale, passando come parametro un colore
+     * definito in colors.xml
+     * @param activity riferimento alla activity
+     * @param list lista di dati
+     */
+    public QuestionsListAdapter(Activity activity, ArrayList<Question> list){
+
+        this(activity, ContextCompat.getColor(activity, R.color.primario_1), list);
+
+    }
+
     @Override
     public QuestionsListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
