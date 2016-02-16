@@ -85,9 +85,12 @@ public class MainActivity extends ElementsForEveryActivity implements Navigation
 
     @Override
     public void onBackPressed() {
+        // comportamento "alla Feedly": se il drawer è chiuso, aprilo
+        // per mostrarlo all'utente ed ad un secondo back, ovvero quando il
+        // drawer è aperto, chiudi l'applicazione
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if ( !drawer.isDrawerOpen(GravityCompat.START) ) {
+            drawer.openDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -106,10 +109,14 @@ public class MainActivity extends ElementsForEveryActivity implements Navigation
         } else if (id == R.id.nav_search) {
         } else if (id == R.id.nav_favs) {
             title = item.getTitle().toString();
-            fragment = new FavouritesFragment();
+            fragment = QuestionsFragment.newInstance(ApplicationServices.GETFAVOURITES);
         } else if (id == R.id.nav_notifications) {
         } else if (id == R.id.nav_question) {
+            title = item.getTitle().toString();
+            fragment = QuestionsFragment.newInstance(ApplicationServices.GETMYQ);
         } else if (id == R.id.nav_answer) {
+            title = item.getTitle().toString();
+            fragment = QuestionsFragment.newInstance(ApplicationServices.GETMYA);
         } else if (id == R.id.nav_logout) {
             logout();
         } else if (id == R.id.cat_1) {

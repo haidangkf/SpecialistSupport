@@ -1,0 +1,14 @@
+<questions>
+    <question>
+        <domanda>Il mio primo favorito! Ti piace ?</domanda>
+        <voti>0</voti>
+        <data>12 febbraio 2015</data>
+        <sinossi></sinossi>
+        <categories>
+            <category>
+                <name>In Evidenza</name>
+                <color>#00cccc</color>
+            </category>
+        </categories>
+    </question>
+</questions>

@@ -43,6 +43,8 @@ public class ApplicationServices extends IntentService {
     public static final String GETCATEGORIES  = "it.telecomitalia.my.aiutami.getCategories";
     public static final String GETQUESTIONS   = "it.telecomitalia.my.aiutami.getQuestions";
     public static final String GETFAVOURITES  = "it.telecomitalia.my.aiutami.getFavourites";
+    public static final String GETMYQ         = "it.telecomitalia.my.aiutami.getMyQ";
+    public static final String GETMYA         = "it.telecomitalia.my.aiutami.getMyA";
 
     /** Classe interna per la definizione dei webservices da interrogare. In questo modo è più agevole effettuare
      * variazioni a seconda dei cambiamenti avvenuti sul webserver. */
@@ -50,7 +52,9 @@ public class ApplicationServices extends IntentService {
 
         public static final String CATEGORIES  = "categories.xml";
         public static final String QUESTIONS   = "questions.xml";
-        public static final String FAVOURITES  = "questions.xml";
+        public static final String FAVOURITES  = "favs.xml";
+        public static final String MYQ         = "myq.xml";
+        public static final String MYA         = "mya.xml";
 
     }
 
@@ -72,8 +76,10 @@ public class ApplicationServices extends IntentService {
         switch (service) {
 
             case GETCATEGORIES : this.getCategories(); break;
-            case GETQUESTIONS : this.getQuestions(""); break;
+            case GETQUESTIONS : this.getQuestions(); break;
             case GETFAVOURITES : this.getFavourites(); break;
+            case GETMYQ : this.getMyQuestions(); break;
+            case GETMYA : this.getMyAnswers(); break;
             default:
                 applicationNull(service);
 
@@ -97,10 +103,9 @@ public class ApplicationServices extends IntentService {
      * a chi ha richiesto l'operazione
      * @param page parte finale della URL da interrogare
      * @param intentName nome dell'intent che viene passato
-     * @param fileName identificativo per dati extra dell'intent in cui risiede la lista
      * @param classType tipologia degli oggetti contenuti nella lista
      */
-    private void getDataFromWebService(String page, String intentName, String fileName, Class<?> classType){
+    private void getDataFromWebService(String page, String intentName, Class<?> classType){
 
         OkHttpClient client  = new OkHttpClient();
         String url = IntranetServices.getWebservicesURL() + page;
@@ -117,10 +122,10 @@ public class ApplicationServices extends IntentService {
             x = new XMLReader();
             list = x.getObjectsList(x.getXMLData(response), classType);
             // andata anche con XML, si mette a disposizione la lista
-            localIntent.putExtra(fileName, list);
+            localIntent.putExtra(intentName, list);
             // caching. ci arrivo solo se tutto è andato bene, altrimenti
             // è stata già sollevata un'eccezione ed il file non viene quindi toccato
-            FileOutputStream outputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
+            FileOutputStream outputStream = openFileOutput(intentName, Context.MODE_PRIVATE);
             outputStream.write(response.getBytes());
             outputStream.close();
 
@@ -131,7 +136,7 @@ public class ApplicationServices extends IntentService {
             // della cache, invece che la schermata bianca di assenza connessione.
             String cachedXML;
             try {
-                FileInputStream readFile = openFileInput(fileName);
+                FileInputStream readFile = openFileInput(intentName);
                 BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(readFile) );
                 StringBuilder stringBuilder = new StringBuilder();
                 while ( (cachedXML = bufferedReader.readLine()) != null ) {
@@ -143,12 +148,12 @@ public class ApplicationServices extends IntentService {
 
             }catch (Exception eFile){
                 eFile.printStackTrace();
-                localIntent.putExtra(fileName, list);
+                localIntent.putExtra(intentName, list);
             }
             // ho preso la cache, se esiste, e list è null oppure quello che ho letto dal file
             // salvato in precedentza
             localIntent.putExtra("isCached", true );
-            localIntent.putExtra(fileName, list);
+            localIntent.putExtra(intentName, list);
 
         } finally {
             sendBroadcast(localIntent);
@@ -164,7 +169,7 @@ public class ApplicationServices extends IntentService {
     @SuppressWarnings("unchecked")
     private void getCategories() {
 
-        getDataFromWebService(WebServices.CATEGORIES, GETCATEGORIES, "categories", Category.class);
+        getDataFromWebService(WebServices.CATEGORIES, GETCATEGORIES, Category.class);
 
     }
 
@@ -172,18 +177,28 @@ public class ApplicationServices extends IntentService {
      * Metodo per collegarsi ad un webservice e scaricare la lista delle domande appartenenti ad
      * una categoria . Tale lista viene trasformata in un ArrayList di oggetti che rappresentano
      * ogni entry e viene passata con un intent a chi ha richiesto l'operazione
-     * @param type filtro su categoria da interrogare
      */
-    private void getQuestions(String type){
+    private void getQuestions(){
 
-        String url = WebServices.QUESTIONS+type;
-        getDataFromWebService(WebServices.QUESTIONS, GETQUESTIONS, "questions", Question.class);
+        getDataFromWebService(WebServices.QUESTIONS, GETQUESTIONS, Question.class);
 
     }
 
     public void getFavourites(){
 
-        getDataFromWebService(WebServices.FAVOURITES, GETFAVOURITES, "favourites", Question.class);
+        getDataFromWebService(WebServices.FAVOURITES, GETFAVOURITES, Question.class);
+
+    }
+
+    public void getMyQuestions(){
+
+        getDataFromWebService(WebServices.MYQ, GETMYQ, Question.class);
+
+    }
+
+    public void getMyAnswers(){
+
+        getDataFromWebService(WebServices.MYA, GETMYA, Question.class);
 
     }
 }

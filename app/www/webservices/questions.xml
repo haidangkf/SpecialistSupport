@@ -1,0 +1,62 @@
+<questions>
+    <question>
+        <domanda>Come posso porre una domanda all'interno della applicazione ?</domanda>
+        <voti>5</voti>
+        <data>11 febbraio 2015</data>
+        <sinossi>Questa è la risposta o una sua sinossi in qualche riga. pensare a far inserire un riassunto in fase di compilazione</sinossi>
+        <categories>
+            <category>
+                <name>Topolino</name>
+                <color>#006e78</color>
+            </category>
+            <category>
+                <name>Paperino</name>
+                <color>#82c85a</color>
+            </category>
+            <category>
+                <name>Pico de' Paperis</name>
+                <color>#CCC000</color>
+            </category>
+        </categories>
+    </question>
+    <question>
+        <domanda>Come posso porre una domanda all'interno della applicazione ?</domanda>
+        <voti>0</voti>
+        <data>2 febbraio 2015</data>
+        <sinossi>Questa è la risposta o una sua sinossi in qualche riga. pensare a far inserire un riassunto in fase di compilazione</sinossi>
+        <categories>
+            <category>
+                <name>Minni</name>
+                <color>#376ea5</color>
+            </category>
+        </categories>
+    </question>
+    <question>
+        <domanda>Come si prepara una crostata ?</domanda>
+        <voti>23</voti>
+        <data>12 febbraio 2015</data>
+        <sinossi>Questa è la risposta o una sua sinossi in qualche riga. pensare a far inserire un riassunto in fase di compilazione</sinossi>
+        <categories>
+            <category>
+                <name>Pippo</name>
+                <color>#ff825a</color>
+            </category>
+            <category>
+                <name>In Evidenza</name>
+                <color>#00cccc</color>
+            </category>
+        </categories>
+    </question>
+    <question>
+        <domanda>E una domanda senza risposta come la visualizzo ? In ogni caso è richiesta almeno una categoria!</domanda>
+        <voti>0</voti>
+        <data>12 febbraio 2015</data>
+        <sinossi></sinossi>
+        <categories>
+            <category>
+                <name>In Evidenza</name>
+                <color>#00cccc</color>
+            </category>
+        </categories>
+    </question>
+</questions>

@@ -81,7 +81,7 @@ public class QuestionsListActivity extends ElementsForEveryActivity {
         // voglio ! In questo modo in mancanza di rete appaiono subito i dati
         sendIntentToService(this, ApplicationServices.GETQUESTIONS);
         try {
-            list = (ArrayList<Question>)(Object)getStreamFromCachedFile("questions", Question.class);
+            list = (ArrayList<Question>)(Object)getStreamFromCachedFile(ApplicationServices.GETQUESTIONS, Question.class);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -140,6 +140,7 @@ public class QuestionsListActivity extends ElementsForEveryActivity {
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter( new QuestionsListAdapter(this, color, list) );
         refresh.setRefreshing(false);
+
     }
 
     /**
@@ -152,7 +153,7 @@ public class QuestionsListActivity extends ElementsForEveryActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            list = (ArrayList<Question>)intent.getSerializableExtra("questions");
+            list = (ArrayList<Question>)intent.getSerializableExtra(ApplicationServices.GETQUESTIONS);
             drawList(list);
             // disegno la lista in ogni caso. se è null e non esiste salvataggio
             // apparirà scermata bianca, altrimenti la lista. Avviso che qualcosa

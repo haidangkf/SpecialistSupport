@@ -45,7 +45,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Controller per QuestionsListActivity
+ * Controller per tutte le view che mandano a schermo una lista di domande, siano esse activity o
+ * fragment creati dal drawer.
  */
 public class QuestionsListAdapter extends RecyclerView.Adapter<QuestionsListAdapter.ViewHolder> {
 
@@ -53,6 +54,14 @@ public class QuestionsListAdapter extends RecyclerView.Adapter<QuestionsListAdap
     private Activity activity;
     private int color;
 
+    /**
+     * Costruttore utilizzato per colorare la toolbar con il colore della categoria a cui
+     * appartengono le domande. Viene utilizzato nella QuestionsListActivity, per evidenziare
+     * che le domande hanno tutte un denominatore comune
+     * @param activity riferimento alla activity
+     * @param color colore della categoria
+     * @param list lista di dati
+     */
     public QuestionsListAdapter(Activity activity, int color, ArrayList<Question> list){
 
         if(list!=null) Collections.sort(list);

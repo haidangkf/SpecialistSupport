@@ -1,0 +1,34 @@
+<questions>
+    <question>
+        <domanda>Questa è una mia risposta ?</domanda>
+        <voti>15</voti>
+        <data>11 febbraio 2015</data>
+        <sinossi>Questa è la risposta o una sua sinossi in qualche riga. pensare a far inserire un riassunto in fase di compilazione</sinossi>
+        <categories>
+            <category>
+                <name>Topolino</name>
+                <color>#006e78</color>
+            </category>
+            <category>
+                <name>Paperino</name>
+                <color>#82c85a</color>
+            </category>
+            <category>
+                <name>Pico de' Paperis</name>
+                <color>#CCC000</color>
+            </category>
+        </categories>
+    </question>
+    <question>
+        <domanda>Ho risposto ad una domanda ?</domanda>
+        <voti>0</voti>
+        <data>2 febbraio 2015</data>
+        <sinossi>Questa è la risposta o una sua sinossi in qualche riga. pensare a far inserire un riassunto in fase di compilazione</sinossi>
+        <categories>
+            <category>
+                <name>Minni</name>
+                <color>#376ea5</color>
+            </category>
+        </categories>
+    </question>
+</questions>

@@ -46,17 +46,28 @@ import java.util.ArrayList;
  * Fragment per la visualizzazione degli elementi preferiti all'interno della
  * activity principale
  */
-public class FavouritesFragment extends Fragment {
+public class QuestionsFragment extends Fragment {
 
     ElementsForEveryActivity activity;
     View layout;
     ArrayList<Question> list;
     SwipeRefreshLayout refresh;
     FavouritesReceiver myreceiver;
+    String whichFilter;
 
 
-    public FavouritesFragment() {
+    public QuestionsFragment() {
         // Required empty public constructor
+    }
+
+    public static QuestionsFragment newInstance(String filter){
+
+        QuestionsFragment f = new QuestionsFragment();
+        Bundle args = new Bundle();
+        args.putString("filter", filter);
+        f.setArguments(args);
+        return f;
+
     }
 
     @SuppressWarnings("unchecked")
@@ -66,11 +77,15 @@ public class FavouritesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         activity = (ElementsForEveryActivity)getActivity();
         myreceiver = new FavouritesReceiver();
+
+        // lista di domande, ma di che tipo ?
+        whichFilter = getArguments().getString("filter");
+
         // carica dati da webservice, ma intanto se c'è un file in cache lo
         // voglio ! In questo modo in mancanza di rete appaiono subito i dati
-        activity.sendIntentToService(activity, ApplicationServices.GETFAVOURITES);
+        activity.sendIntentToService(activity, whichFilter);
         try {
-            list = (ArrayList<Question>)(Object)activity.getStreamFromCachedFile("favourites", Question.class);
+            list = (ArrayList<Question>)(Object)activity.getStreamFromCachedFile(whichFilter, Question.class);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -96,7 +111,7 @@ public class FavouritesFragment extends Fragment {
             @Override
             public void onRefresh() {
 
-                activity.sendIntentToService(activity, ApplicationServices.GETFAVOURITES);
+                activity.sendIntentToService(activity, whichFilter);
 
             }
         });
@@ -114,7 +129,7 @@ public class FavouritesFragment extends Fragment {
     public void onResume() {
         super.onResume();
         // aggiorna la View se arriva un intent quando il fragment è visibile all'utente
-        activity.registerReceiver(myreceiver, new IntentFilter(ApplicationServices.GETFAVOURITES));
+        activity.registerReceiver(myreceiver, new IntentFilter(whichFilter));
     }
 
     @Override
@@ -152,7 +167,7 @@ public class FavouritesFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            list = (ArrayList<Question>)intent.getSerializableExtra("favourites");
+            list = (ArrayList<Question>)intent.getSerializableExtra(whichFilter);
             drawList(list);
             // disegno la lista in ogni caso. se è null e non esiste salvataggio
             // apparirà scermata bianca, altrimenti la lista. Avviso che qualcosa

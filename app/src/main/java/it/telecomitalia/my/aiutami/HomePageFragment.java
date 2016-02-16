@@ -71,7 +71,7 @@ public class HomePageFragment extends Fragment {
         // voglio ! In questo modo in mancanza di rete appaiono subito le categorie
         activity.sendIntentToService(activity, ApplicationServices.GETCATEGORIES);
         try {
-            list = (ArrayList<Category>)(Object)activity.getStreamFromCachedFile("categories", Category.class);
+            list = (ArrayList<Category>)(Object)activity.getStreamFromCachedFile(ApplicationServices.GETCATEGORIES, Category.class);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -167,7 +167,7 @@ public class HomePageFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            list = (ArrayList<Category>)intent.getSerializableExtra("categories");
+            list = (ArrayList<Category>)intent.getSerializableExtra(ApplicationServices.GETCATEGORIES);
             drawList(list);
             // disegno la lista in ogni caso. se è null e non esiste salvataggio
             // apparirà scermata bianca, altrimenti la lista. Avviso che qualcosa
