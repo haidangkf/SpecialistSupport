@@ -210,7 +210,7 @@ public class Welcome extends AppCompatActivity {
                 buildMessage(getString(R.string.error2)).show();
                 break;
             case 3:
-                // test connessione alla intranet
+                // empty connessione alla intranet
                 buildMessage(getString(R.string.error3)).setAction(getString(R.string.error_button1), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -219,7 +219,7 @@ public class Welcome extends AppCompatActivity {
                 }).show();
                 break;
             case 4:
-                // test connessione alla intranet
+                // empty connessione alla intranet
                 buildMessage(getString(R.string.error4)).setAction(getString(R.string.error_button2), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

@@ -1,5 +1,13 @@
 <categories>
     <category>
+        <name>In Evidenza</name>
+        <inevidenza>true</inevidenza>
+        <aggiornamenti>false</aggiornamenti>
+        <descrizione>Le domande/risposte migliori, cambi di processo e le ultime novità da Operation Management</descrizione>
+        <color>#00cccc</color>
+        <elements>8</elements>
+    </category>
+    <category>
         <name>Topolino</name>
         <inevidenza>false</inevidenza>
         <aggiornamenti>false</aggiornamenti>
@@ -35,7 +43,7 @@
         <name>Gastone</name>
         <inevidenza>false</inevidenza>
         <aggiornamenti>false</aggiornamenti>
-        <descrizione>Proprio due parole due.</descrizione>
+        <descrizione>Questa è una categoria con una descrizione quanto meno equilibrata; non troppo lunga, ma neanche telegrafica.</descrizione>
         <color>#6e69a0</color>
         <elements>8</elements>
     </category>
@@ -45,14 +53,6 @@
         <aggiornamenti>false</aggiornamenti>
         <descrizione>Proprio due parole due.</descrizione>
         <color>#CCC000</color>
-        <elements>8</elements>
-    </category>
-    <category>
-        <name>In Evidenza</name>
-        <inevidenza>true</inevidenza>
-        <aggiornamenti>false</aggiornamenti>
-        <descrizione>Le domande/risposte migliori, cambi di processo e le ultime novità da Operation Management</descrizione>
-        <color>#00cccc</color>
         <elements>8</elements>
     </category>
     <category>

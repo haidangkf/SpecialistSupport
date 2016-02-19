@@ -33,6 +33,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -67,7 +68,9 @@ public class QuestionsListActivity extends ElementsForEveryActivity {
 
         // personalizzazioni toolbar, titolo e colori
         String title = getIntent().getStringExtra("title");
-        color    = getIntent().getIntExtra("color", R.color.primario_1);
+        color = getIntent().getIntExtra("color", R.color.primario_1);
+        final int id = getIntent().getIntExtra("filter", 0);
+
         getSupportActionBar().setTitle(title);
         toolbar.setBackgroundColor(color);
         ctl.setBackgroundColor(color);
@@ -79,9 +82,12 @@ public class QuestionsListActivity extends ElementsForEveryActivity {
 
         // carica dati da webservice, ma intanto se c'è un file in cache lo
         // voglio ! In questo modo in mancanza di rete appaiono subito i dati
-        sendIntentToService(this, ApplicationServices.GETQUESTIONS);
+        sendIntentToService(this, ApplicationServices.GETQUESTIONS, id);
         try {
-            list = (ArrayList<Question>)(Object)getStreamFromCachedFile(ApplicationServices.GETQUESTIONS, Question.class);
+            list = (ArrayList<Question>)(Object)getStreamFromCachedFile(
+                    ApplicationServices.GETQUESTIONS+String.valueOf(id),
+                    Question.class
+            );
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -100,7 +106,7 @@ public class QuestionsListActivity extends ElementsForEveryActivity {
             @Override
             public void onRefresh() {
 
-                sendIntentToService(QuestionsListActivity.this, ApplicationServices.GETQUESTIONS);
+                sendIntentToService(QuestionsListActivity.this, ApplicationServices.GETQUESTIONS, id);
 
             }
         });
@@ -147,7 +153,7 @@ public class QuestionsListActivity extends ElementsForEveryActivity {
      * Classe interna che definisce il receiver per gli intent lanciati dal
      * servizio.
      */
-    public class QuestionsReceiver extends BroadcastReceiver {
+    public class QuestionsReceiver extends BroadcastReceiver {  // todo. crearne uno solo, che valga anche per il Fragment!
 
         @SuppressWarnings("unchecked")
         @Override
@@ -158,11 +164,17 @@ public class QuestionsListActivity extends ElementsForEveryActivity {
             // disegno la lista in ogni caso. se è null e non esiste salvataggio
             // apparirà scermata bianca, altrimenti la lista. Avviso che qualcosa
             // non è andato bene.
-            if( intent.getBooleanExtra("isCached", false) || list==null ){
-                // se i dati arrivano dalla cache oppure list è ancora null...
+            if( intent.getBooleanExtra("isCached", false)  ){
+                // se i dati arrivano dalla cache
                 Snackbar.make(refresh, getResources().getString(R.string.error_refresh), Snackbar.LENGTH_LONG).show();
             }
-
+            // se list è ancora null, o non ha elementi, metto una immagine per mandare il messaggio di
+            // "contenitore vuoto". Al pull to refresh, se la situazione cambia, l'immagine scompare
+            if( list==null || list.size()==0  ){
+                refresh.setBackground(ContextCompat.getDrawable(QuestionsListActivity.this, R.drawable.background_null));
+            }else{
+                refresh.setBackground(null);
+            }
         }
 
     }

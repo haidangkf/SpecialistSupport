@@ -152,6 +152,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
                     Intent intent = new Intent(activity, QuestionsListActivity.class);
                     intent.putExtra("color", color);
                     intent.putExtra("title", titleText);
+                    intent.putExtra("filter", id );
                     activity.startActivity(intent);
 
                 }

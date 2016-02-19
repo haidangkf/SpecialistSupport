@@ -52,9 +52,9 @@ public class ApplicationServices extends IntentService {
 
         public static final String CATEGORIES  = "categories.php";
         public static final String QUESTIONS   = "questions.php";
-        public static final String FAVOURITES  = "favs.xml";
-        public static final String MYQ         = "myq.xml";
-        public static final String MYA         = "mya.xml";
+        public static final String FAVOURITES  = "example_favs.xml";
+        public static final String MYQ         = "example_myq.xml";
+        public static final String MYA         = "example_mya.xml";
 
     }
 
@@ -76,7 +76,9 @@ public class ApplicationServices extends IntentService {
         switch (service) {
 
             case GETCATEGORIES : this.getCategories(); break;
-            case GETQUESTIONS : this.getQuestions(); break;
+            case GETQUESTIONS :
+                this.getQuestions( intent.getIntExtra("filter",0) );
+                break;
             case GETFAVOURITES : this.getFavourites(); break;
             case GETMYQ : this.getMyQuestions(); break;
             case GETMYA : this.getMyAnswers(); break;
@@ -103,9 +105,12 @@ public class ApplicationServices extends IntentService {
      * a chi ha richiesto l'operazione
      * @param page parte finale della URL da interrogare
      * @param intentName nome dell'intent che viene passato
+     * @param fileName nome del file salvato in cache
      * @param classType tipologia degli oggetti contenuti nella lista
      */
-    private void getDataFromWebService(String page, String intentName, Class<?> classType){
+    private void getDataFromWebService(String page, String intentName, String fileName,  Class<?> classType){
+
+        fileName = fileName != null ? fileName : intentName;
 
         OkHttpClient client  = new OkHttpClient();
         String url = IntranetServices.getWebservicesURL() + page;
@@ -125,7 +130,7 @@ public class ApplicationServices extends IntentService {
             localIntent.putExtra(intentName, list);
             // caching. ci arrivo solo se tutto è andato bene, altrimenti
             // è stata già sollevata un'eccezione ed il file non viene quindi toccato
-            FileOutputStream outputStream = openFileOutput(intentName, Context.MODE_PRIVATE);
+            FileOutputStream outputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
             outputStream.write(response.getBytes());
             outputStream.close();
 
@@ -134,9 +139,10 @@ public class ApplicationServices extends IntentService {
             // abbia apn configurato bene e che sia coperto da segnale mobile. In questo caso mi sono
             // salvato il response del webservice ed in caso di errore mostro una schermata con i dati
             // della cache, invece che la schermata bianca di assenza connessione.
+            boolean isCached = true;
             String cachedXML;
             try {
-                FileInputStream readFile = openFileInput(intentName);
+                FileInputStream readFile = openFileInput(fileName);
                 BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(readFile) );
                 StringBuilder stringBuilder = new StringBuilder();
                 while ( (cachedXML = bufferedReader.readLine()) != null ) {
@@ -147,17 +153,29 @@ public class ApplicationServices extends IntentService {
                 list = x.getObjectsList(x.getXMLData(stringBuilder.toString()), classType);
 
             }catch (Exception eFile){
-                eFile.printStackTrace();
-                localIntent.putExtra(intentName, list);
+                isCached = false;
             }
             // ho preso la cache, se esiste, e list è null oppure quello che ho letto dal file
             // salvato in precedentza
-            localIntent.putExtra("isCached", true );
+            localIntent.putExtra("isCached", isCached );
             localIntent.putExtra(intentName, list);
 
         } finally {
             sendBroadcast(localIntent);
         }
+
+    }
+
+    /**
+     * Overload del metodo precedente, ha bisogno di un solo file in cache, e non molteplici
+     * come nel caso delle categorie. In questo caso il nome del file prende il nome dell'intent
+     * @param page parte finale della URL da interrogare
+     * @param intentName nome dell'intent che viene passato
+     * @param classType tipologia degli oggetti contenuti nella lista
+     */
+    private void getDataFromWebService(String page, String intentName, Class<?> classType){
+
+        getDataFromWebService(page, intentName, null, classType);
 
     }
 
@@ -176,11 +194,15 @@ public class ApplicationServices extends IntentService {
     /**
      * Metodo per collegarsi ad un webservice e scaricare la lista delle domande appartenenti ad
      * una categoria . Tale lista viene trasformata in un ArrayList di oggetti che rappresentano
-     * ogni entry e viene passata con un intent a chi ha richiesto l'operazione
+     * ogni entry e viene passata con un intent a chi ha richiesto l'operazione. Per ogni categoria
+     * viene creato un differente file in cache.
+     * @param filter input per filtrare le domande in base alla categoria selezionata
      */
-    private void getQuestions(){
+    private void getQuestions(int filter){
 
-        getDataFromWebService(WebServices.QUESTIONS, GETQUESTIONS, Question.class);
+        String url      = WebServices.QUESTIONS+"?category=" + String.valueOf(filter);
+        String fileName = GETQUESTIONS+String.valueOf(filter);
+        getDataFromWebService(url, GETQUESTIONS, fileName, Question.class);
 
     }
 

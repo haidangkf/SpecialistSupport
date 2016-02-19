@@ -150,8 +150,15 @@ public abstract class ElementsForEveryActivity extends AppCompatActivity {
      */
     public void sendIntentToService(Activity activity, String type){
 
+        sendIntentToService(activity, type, 0);
+
+    }
+
+    public void sendIntentToService(Activity activity, String type, int filter){
+
         Intent i = new Intent(activity, ApplicationServices.class);
         i.putExtra("application", type);
+        if( filter!=0 ) i.putExtra("filter", filter);
         activity.startService(i);
 
     }

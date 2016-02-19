@@ -33,6 +33,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -52,7 +53,7 @@ public class QuestionsFragment extends Fragment {
     View layout;
     ArrayList<Question> list;
     SwipeRefreshLayout refresh;
-    FavouritesReceiver myreceiver;
+    QuestionsReceiver myreceiver;
     String whichFilter;
 
 
@@ -83,7 +84,7 @@ public class QuestionsFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
         activity = (ElementsForEveryActivity)getActivity();
-        myreceiver = new FavouritesReceiver();
+        myreceiver = new QuestionsReceiver();
 
         // lista di domande, ma di che tipo ?
         whichFilter = getArguments().getString("filter");
@@ -168,7 +169,7 @@ public class QuestionsFragment extends Fragment {
      * Classe interna che definisce il receiver per gli intent lanciati dal
      * servizio.
      */
-    public class FavouritesReceiver extends BroadcastReceiver {
+    public class QuestionsReceiver extends BroadcastReceiver {
 
         @SuppressWarnings("unchecked")
         @Override
@@ -179,11 +180,17 @@ public class QuestionsFragment extends Fragment {
             // disegno la lista in ogni caso. se è null e non esiste salvataggio
             // apparirà scermata bianca, altrimenti la lista. Avviso che qualcosa
             // non è andato bene.
-            if( intent.getBooleanExtra("isCached", false) || list==null ){
-                // se i dati arrivano dalla cache oppure list è ancora null...
+            if( intent.getBooleanExtra("isCached", false) ){
+                // se i dati arrivano dalla cache
                 Snackbar.make(refresh, getResources().getString(R.string.error_refresh), Snackbar.LENGTH_LONG).show();
             }
-
+            // se list è ancora null, o non ha elementi, metto una immagine per mandare il messaggio di
+            // "contenitore vuoto". Al pull to refresh, se la situazione cambia, l'immagine scompare
+            if( list==null || list.size()==0 ){
+                refresh.setBackground(ContextCompat.getDrawable(activity, R.drawable.background_null));
+            }else{
+                refresh.setBackground(null);
+            }
         }
 
     }
