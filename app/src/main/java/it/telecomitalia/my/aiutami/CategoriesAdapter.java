@@ -85,6 +85,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
 
         // salvo negli attributi dell'oggetto i valori da passare con intent
         // alla activity successiva in caso di click
+        viewHolder.id        = list.get(position).getId();
         viewHolder.titleText = list.get(position).getName();
         viewHolder.color     = Color.parseColor( list.get(position).getColor());
 
@@ -126,6 +127,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
      */
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        int id;
         TextView title;
         ImageView banner;
         int color;

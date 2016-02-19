@@ -50,8 +50,8 @@ public class ApplicationServices extends IntentService {
      * variazioni a seconda dei cambiamenti avvenuti sul webserver. */
     private class WebServices{
 
-        public static final String CATEGORIES  = "categories.xml";
-        public static final String QUESTIONS   = "questions.xml";
+        public static final String CATEGORIES  = "categories.php";
+        public static final String QUESTIONS   = "questions.php";
         public static final String FAVOURITES  = "favs.xml";
         public static final String MYQ         = "myq.xml";
         public static final String MYA         = "mya.xml";

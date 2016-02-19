@@ -5,7 +5,12 @@ import android.support.annotation.NonNull;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 
 /**
@@ -58,8 +63,15 @@ public class Question implements Serializable, Comparable<Question>{
     }
 
     public String getData(){
-        // todo definire il formato e quindi anche l'oggetto
-        return data;
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ITALY);
+        try {
+            Date d = format.parse(this.data);
+            this.data = SimpleDateFormat.getDateInstance(SimpleDateFormat.LONG, Locale.ITALY).format(d);
+            //String time = SimpleDateFormat.getTimeInstance().format(d); // orario
+        }catch ( ParseException e){
+            this.data = "data non disponibile";
+        }
+        return this.data;
     }
 
     public String getSinossi(){

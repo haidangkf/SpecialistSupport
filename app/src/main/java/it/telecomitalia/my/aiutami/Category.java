@@ -37,6 +37,7 @@ import java.io.Serializable;
  */
 public class Category implements Serializable, Comparable<Category> {
 
+    private int id;
     private String name;
     private String color;
     private String descrizione;
@@ -46,8 +47,9 @@ public class Category implements Serializable, Comparable<Category> {
 
     public Category(Element xml){
 
-        name            = xml.getElementsByTagName("name").item(0).getTextContent();
-        color           = xml.getElementsByTagName("color").item(0).getTextContent();
+        id    = Integer.parseInt(xml.getElementsByTagName("id").item(0).getTextContent());
+        name  = xml.getElementsByTagName("name").item(0).getTextContent();
+        color = xml.getElementsByTagName("color").item(0).getTextContent();
         // se non sono definiti gli altri tag, li ignoro
         // avrei potuto fare overload del costruttore ma ho la classe
         // XMLReader vuole un solo costruttore.
@@ -73,6 +75,10 @@ public class Category implements Serializable, Comparable<Category> {
         int propertyObjA = a.inEvidenza ? 1 : 0;
         int propertyObjB = this.inEvidenza ? 1 : 0;
         return propertyObjA - propertyObjB;
+    }
+
+    public int getId(){
+        return id;
     }
 
     public String getName(){

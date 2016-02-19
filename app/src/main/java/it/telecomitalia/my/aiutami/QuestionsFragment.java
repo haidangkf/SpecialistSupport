@@ -60,6 +60,13 @@ public class QuestionsFragment extends Fragment {
         // Required empty public constructor
     }
 
+    /**
+     * Istanzia un nuovo oggetto con parametro. Tale parametro è una String, attributo pubblico di
+     * ApplicationServices che identifica che tipologia di fragment istanziare e quindi che servizio
+     * utilizzare. Resta sempre costante il fatto che sia un fragment che elenca oggetti Question.
+     * @param filter attributo di ApplicationServices, vedi doc
+     * @return nuova instanza di QuestionsFragment
+     */
     public static QuestionsFragment newInstance(String filter){
 
         QuestionsFragment f = new QuestionsFragment();
