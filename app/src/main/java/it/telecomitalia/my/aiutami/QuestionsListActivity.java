@@ -51,6 +51,7 @@ public class QuestionsListActivity extends ElementsForEveryActivity {
     int color;
     ArrayList<Question> list;
     SwipeRefreshLayout refresh;
+    QuestionsListReceiver myreceiver;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -58,6 +59,7 @@ public class QuestionsListActivity extends ElementsForEveryActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.question_list);
+        myreceiver = new QuestionsListReceiver(this);
 
         // Toolbar e navigazione
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -114,68 +116,24 @@ public class QuestionsListActivity extends ElementsForEveryActivity {
         refresh.setColorSchemeResources(R.color.primario_2);
 
         // inserisce la lista di elementi
-        drawList(list);
+        myreceiver.drawList(list);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         // aggiorna la View se arriva un intent quando il fragment è visibile all'utente
-        registerReceiver(new QuestionsReceiver(), new IntentFilter(ApplicationServices.GETQUESTIONS));
+        registerReceiver(new QuestionsListReceiver(this), new IntentFilter(ApplicationServices.GETQUESTIONS));
     }
 
     @Override
     public void onPause() {
         super.onPause();
         try {
-            unregisterReceiver(new QuestionsReceiver());
+            unregisterReceiver(new QuestionsListReceiver(this));
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    /**
-     * Metodo per disegnare la lista di elementi all'interno della
-     * RecyclerView definita nel layout. Viene eseguito quando activity
-     * viene visualizzato, oppure quando occorre aggiornare la lista
-     * @param list elementi racchiusi in una lista
-     */
-    public void drawList(final ArrayList<Question> list){
-
-        RecyclerView rv = (RecyclerView) findViewById(R.id.recyclerview);
-        rv.setLayoutManager(new LinearLayoutManager(this));
-        rv.setAdapter( new QuestionsListAdapter(this, color, list) );
-        refresh.setRefreshing(false);
-
-    }
-
-    /**
-     * Classe interna che definisce il receiver per gli intent lanciati dal
-     * servizio.
-     */
-    public class QuestionsReceiver extends BroadcastReceiver {  // todo. crearne uno solo, che valga anche per il Fragment!
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            list = (ArrayList<Question>)intent.getSerializableExtra(ApplicationServices.GETQUESTIONS);
-            drawList(list);
-            // disegno la lista in ogni caso. se è null e non esiste salvataggio
-            // apparirà scermata bianca, altrimenti la lista. Avviso che qualcosa
-            // non è andato bene.
-            if( intent.getBooleanExtra("isCached", false)  ){
-                // se i dati arrivano dalla cache
-                Snackbar.make(refresh, getResources().getString(R.string.error_refresh), Snackbar.LENGTH_LONG).show();
-            }
-            // se list è ancora null, o non ha elementi, metto una immagine per mandare il messaggio di
-            // "contenitore vuoto". Al pull to refresh, se la situazione cambia, l'immagine scompare
-            if( list==null || list.size()==0  ){
-                refresh.setBackground(ContextCompat.getDrawable(QuestionsListActivity.this, R.drawable.background_null));
-            }else{
-                refresh.setBackground(null);
-            }
-        }
-
-    }
 }

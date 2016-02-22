@@ -46,6 +46,17 @@ public class ApplicationServices extends IntentService {
     public static final String GETMYQ         = "it.telecomitalia.my.aiutami.getMyQ";
     public static final String GETMYA         = "it.telecomitalia.my.aiutami.getMyA";
 
+    /**
+     * descrive quali sono gli intent che gestiscono le diverse liste di domande.
+     * Se viene definito un nuovo intent qui sopra, se tale intent gestisce delle domande,
+     * va riportato all'interno di questo array in modo che il Receiver sia in grado di intercettarlo
+     */
+    public static final String[] QUESTIONS_INTENT = new String[]{
+            GETQUESTIONS,
+            GETFAVOURITES,
+            GETMYQ,
+            GETMYA
+    };
     /** Classe interna per la definizione dei webservices da interrogare. In questo modo è più agevole effettuare
      * variazioni a seconda dei cambiamenti avvenuti sul webserver. */
     private class WebServices{
