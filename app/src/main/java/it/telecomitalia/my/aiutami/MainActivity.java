@@ -109,14 +109,14 @@ public class MainActivity extends ElementsForEveryActivity implements Navigation
         } else if (id == R.id.nav_search) {
         } else if (id == R.id.nav_favs) {
             title = item.getTitle().toString();
-            fragment = QuestionsFragment.newInstance(ApplicationServices.GETFAVOURITES);
+            fragment = QuestionsListFragment.newInstance(ApplicationServices.GETFAVOURITES);
         } else if (id == R.id.nav_notifications) {
         } else if (id == R.id.nav_question) {
             title = item.getTitle().toString();
-            fragment = QuestionsFragment.newInstance(ApplicationServices.GETMYQ);
+            fragment = QuestionsListFragment.newInstance(ApplicationServices.GETMYQ);
         } else if (id == R.id.nav_answer) {
             title = item.getTitle().toString();
-            fragment = QuestionsFragment.newInstance(ApplicationServices.GETMYA);
+            fragment = QuestionsListFragment.newInstance(ApplicationServices.GETMYA);
         } else if (id == R.id.nav_logout) {
             logout();
         } else if (id == R.id.cat_1) {

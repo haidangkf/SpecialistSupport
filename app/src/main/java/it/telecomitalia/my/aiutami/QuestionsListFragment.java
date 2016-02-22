@@ -26,17 +26,10 @@
  *******************************************************************************/
 package it.telecomitalia.my.aiutami;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +40,7 @@ import java.util.ArrayList;
  * Fragment per la visualizzazione degli elementi preferiti all'interno della
  * activity principale
  */
-public class QuestionsFragment extends Fragment {
+public class QuestionsListFragment extends Fragment {
 
     ElementsForEveryActivity activity;
     View layout;
@@ -57,7 +50,7 @@ public class QuestionsFragment extends Fragment {
     String whichFilter;
 
 
-    public QuestionsFragment() {
+    public QuestionsListFragment() {
         // Required empty public constructor
     }
 
@@ -66,11 +59,11 @@ public class QuestionsFragment extends Fragment {
      * ApplicationServices che identifica che tipologia di fragment istanziare e quindi che servizio
      * utilizzare. Resta sempre costante il fatto che sia un fragment che elenca oggetti Question.
      * @param filter attributo di ApplicationServices, vedi doc
-     * @return nuova instanza di QuestionsFragment
+     * @return nuova instanza di QuestionsListFragment
      */
-    public static QuestionsFragment newInstance(String filter){
+    public static QuestionsListFragment newInstance(String filter){
 
-        QuestionsFragment f = new QuestionsFragment();
+        QuestionsListFragment f = new QuestionsListFragment();
         Bundle args = new Bundle();
         args.putString("filter", filter);
         f.setArguments(args);

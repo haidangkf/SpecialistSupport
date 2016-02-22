@@ -115,7 +115,6 @@ public class XMLReader {
             for (int i = 0; i < nodes.getLength(); i++) {
                 list.add(c.newInstance( nodes.item(i) ));
             }
-            //non sono riuscito ad utilizzare i generics :( todo
             return list;
 
         }catch (NoSuchMethodException e){
