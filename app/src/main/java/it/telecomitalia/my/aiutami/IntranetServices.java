@@ -309,14 +309,7 @@ public class IntranetServices extends IntentService {
                 //questa è la lista degli elementi trovati, servisse mai...
                 List<SearchResultEntry> elements = searchResult.getSearchEntries();
                 // creo un oggetto utente che raccoglie le proprietà di LDAP
-                HashMap<String, String> userProperties = new HashMap<>();
-                userProperties.put("matricola", elements.get(0).getAttribute("uid").getValue());
-                userProperties.put("nome", elements.get(0).getAttribute("displayName").getValue());             //paoletti marco
-                userProperties.put("struttura", elements.get(0).getAttribute("tigAmbito").getValue());          //Network Assurance
-                userProperties.put("bacino", elements.get(0).getAttribute("department").getValue());            //OA.AS/C.OP
-                userProperties.put("sede", elements.get(0).getAttribute("l").getValue());                       // firenze
-                userProperties.put("descrizione", elements.get(0).getAttribute("descrizStruttura").getValue()); //Operation & ...
-                userProperties.put("telefono", elements.get(0).getAttribute("mobile").getValue());
+                HashMap<String, String> userProperties = getLdapProperties(elements);
                 localIntent.putExtra("userProperties", userProperties);
                 // return elements.get(0); SearchResultEntry che identifica utente
             }
@@ -348,14 +341,7 @@ public class IntranetServices extends IntentService {
                     SearchResult searchResult = connection.search(DN, SearchScope.SUB, "(uid=" + matricola + ")");
                     List<SearchResultEntry> elements = searchResult.getSearchEntries();
                     // creo un oggetto utente che raccoglie le proprietà di LDAP
-                    HashMap<String, String> userProperties = new HashMap<>();
-                    userProperties.put("matricola", matricola);
-                    userProperties.put("nome", elements.get(0).getAttribute("displayName").getValue());             //paoletti marco
-                    userProperties.put("struttura", elements.get(0).getAttribute("tigAmbito").getValue());          //Network Assurance
-                    userProperties.put("bacino", elements.get(0).getAttribute("department").getValue());            //OA.AS/C.OP
-                    userProperties.put("sede", elements.get(0).getAttribute("l").getValue());                       // firenze
-                    userProperties.put("descrizione", elements.get(0).getAttribute("descrizStruttura").getValue()); //Operation & ...
-                    userProperties.put("telefono", elements.get(0).getAttribute("mobile").getValue());
+                    HashMap<String, String> userProperties = getLdapProperties(elements);
                     localIntent.putExtra("userProperties", userProperties);
                 }
             }
@@ -364,6 +350,20 @@ public class IntranetServices extends IntentService {
         } finally {
             LocalBroadcastManager.getInstance(this).sendBroadcast(localIntent);
         }
+    }
+
+    private HashMap<String,String> getLdapProperties(List<SearchResultEntry> properties){
+
+        HashMap<String, String> userProperties = new HashMap<>();
+        userProperties.put("matricola", properties.get(0).getAttribute("uid").getValue());
+        userProperties.put("nome", properties.get(0).getAttribute("displayName").getValue());             //paoletti marco
+        userProperties.put("struttura", properties.get(0).getAttribute("tigFamProf").getValue());          //Network
+        userProperties.put("bacino", properties.get(0).getAttribute("department").getValue());            //OA.AS/C.OP
+        userProperties.put("sede", properties.get(0).getAttribute("l").getValue());                       // firenze
+        userProperties.put("descrizione", properties.get(0).getAttribute("descrizStruttura").getValue()); //Operation & ...
+        userProperties.put("telefono", properties.get(0).getAttribute("mobile").getValue());
+        return userProperties;
+
     }
 
     /**

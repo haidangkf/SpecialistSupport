@@ -10,6 +10,13 @@ android {
         targetSdkVersion 23
         versionCode 2
         versionName "1.0"
+        // gradle 1.5 e Support Libraries 23.2.0 per support-vector-drawable
+        generatedDensities = []
+        aaptOptions {
+            additionalParameters "--no-version-vectors"
+        }
+        // gradle 2.0+ ...
+        // vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -23,9 +30,9 @@ repositories {
 }
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:design:23.1.1'
-    compile 'com.android.support:cardview-v7:23.1.1'
+    compile 'com.android.support:appcompat-v7:23.2.0'
+    compile 'com.android.support:design:23.2.0'
+    compile 'com.android.support:cardview-v7:23.2.0'
     compile 'com.unboundid:unboundid-ldapsdk:3.0.0'
     compile 'com.squareup.okhttp:okhttp:2.5.0'
 }
