@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -11,7 +13,7 @@
          posso fare il login senza richiedere user e password. I due layout rappresentano questa possibilità,
          di default è visibile quello con la userid, ma durante onCreate, se ho un telefonico inverto questa
          situazione e mostro layout per login senza password -->
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
                   android:id="@+id/userAndPassword"
                   android:orientation="vertical"
                   android:layout_width="match_parent"
@@ -79,8 +81,8 @@
             android:visibility="gone"
             android:layout_marginTop="@dimen/loginElementMarginVertical" />
     </LinearLayout>
-    <!-- Da disegnare, questo è fatto con poca cura -->
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <LinearLayout
                   android:orientation="vertical"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
@@ -98,12 +100,13 @@
             android:src="@mipmap/timlogo" />
 
         <ImageView
+            tools:ignore="MissingPrefix"
             android:layout_width="125dp"
             android:layout_height="125dp"
             android:id="@+id/imageView2"
             android:layout_gravity="center_horizontal"
             android:tint="@color/primario_1"
-            android:src="@drawable/avatar"
+            app:srcCompat="@drawable/avatar"
             android:contentDescription="@string/avatar" />
 
         <TextView
