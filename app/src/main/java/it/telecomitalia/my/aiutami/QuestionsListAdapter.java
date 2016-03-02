@@ -108,7 +108,7 @@ public class QuestionsListAdapter extends RecyclerView.Adapter<QuestionsListAdap
         // 0 - se c'è una risposta, ma non un voto
         // 1 - se manca la risposta ( quindi non è possibile votare )
         // 2 - ci sono voti e risposta, si spera il caso preponderante.
-        Drawable star = ContextCompat.getDrawable(activity.getBaseContext(), R.drawable.ic_voto);
+        Drawable star = ContextCompat.getDrawable(activity, R.drawable.ic_voto);
         if( list.get(position).getVoti()==0 ){
             // nei primi due casi evidenzio la cosa. mutate() importante, altrimenti cambiano TUTTE
             DrawableCompat.setTint( DrawableCompat.wrap(star).mutate(), ContextCompat.getColor(activity, R.color.grey_white) );

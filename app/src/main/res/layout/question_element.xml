@@ -23,10 +23,11 @@
             android:paddingEnd="0dp">
 
             <TextView
+                tools:ignore="MissingPrefix"
                 android:id="@+id/n_voti"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableBottom="@drawable/ic_voto"
+                android:drawableBottom="@drawable/ic_voto_container"
                 android:textSize="14sp"
                 tools:text="9"
                 android:gravity="center_horizontal"/>
