@@ -83,7 +83,7 @@ import javax.net.ssl.TrustManagerFactory;
 public class IntranetServices extends IntentService {
 
     // Configurazione
-    private static final String LDAP              = "directory.services.external.local";
+    private static final String LDAP              = "10.173.83.114";//"directory.services.external.local";
     private static final String DN                = "OU=dipendenti,OU=TelecomItalia,O=Telecom Italia Group";
     private static final String[] wifiAbilitate   = {"CONSULENTI","DIPENDENTI","TELECOM"};
     private static final String APN               = "intelecomitalia.tim.it";
@@ -164,7 +164,7 @@ public class IntranetServices extends IntentService {
         NetworkInfo activeInfo = connManager.getActiveNetworkInfo();
         if( activeInfo != null && activeInfo.isConnected() ) {
             boolean mobileConnected = activeInfo.getType() == ConnectivityManager.TYPE_MOBILE;
-            if( mobileConnected && activeInfo.getExtraInfo().equals(APN) ){
+            if( mobileConnected && activeInfo.getExtraInfo().equalsIgnoreCase(APN) ){
                 //connesso con 4G
                 return true;
             }
